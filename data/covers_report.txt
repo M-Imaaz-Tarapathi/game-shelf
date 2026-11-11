@@ -1,0 +1,26 @@
+Last run: 2026-11-11 17:56 UTC
+Added 68 covers, not found 1.
+
+Double-check these (not an exact name match, or several games share the name):
+  Hollow Knight  ->  used IGDB's "Hollow Knight (2017)"
+  Batman: Arkham Asylum  ->  used IGDB's "Batman: Arkham Asylum (2009)"
+  Hollow Knight: Silksong  ->  used IGDB's "Hollow Knight: Silksong (2025)"
+  Batman: Arkham Origins  ->  used IGDB's "Batman: Arkham Origins (2013)"
+  It Takes Two  ->  used IGDB's "It Takes Two (2021)"
+  Resident Evil 2  ->  used IGDB's "Resident Evil 2 (2019)"
+  Alien: Isolation  ->  used IGDB's "Alien: Isolation (2014)"
+  Layers of Fear  ->  used IGDB's "Layers of Fear (2016)"
+  Call of Duty: World at War  ->  used IGDB's "Call of Duty: World at War (2008)"
+  Dead Space  ->  used IGDB's "Dead Space (2008)"
+  Tomb Raider  ->  used IGDB's "Tomb Raider (2013)"
+  Ender Lilies  ->  used IGDB's "Ender Lilies: Quietus of the Knights"
+  BioShock  ->  used IGDB's "BioShock (2007)"
+  Dead Cells  ->  used IGDB's "Dead Cells (2018)"
+  Call of Duty 2  ->  used IGDB's "Call of Duty 2 (2005)"
+  Inside  ->  used IGDB's "Inside (2016)"
+  GTA: Vice City  ->  used IGDB's "Grand Theft Auto: Vice City (2002)"
+  Limbo  ->  used IGDB's "Limbo (2010)"
+  Journey  ->  used IGDB's "The Sims 4: Journey to Batuu"
+
+No cover found (add a better name or IGDB id to data/overrides.json, or upload one on the site):
+  We Were Here
