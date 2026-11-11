@@ -6,7 +6,8 @@
    "hours": 435,
    "rank": 1,
    "order": 1,
-   "finished": null
+   "finished": null,
+   "steamAppId": 374320
   },
   {
    "id": "g002",
@@ -14,7 +15,8 @@
    "hours": 251,
    "rank": 2,
    "order": 2,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1245620
   },
   {
    "id": "g003",
@@ -22,7 +24,8 @@
    "hours": 62.2,
    "rank": 3,
    "order": 3,
-   "finished": null
+   "finished": null,
+   "steamAppId": 208650
   },
   {
    "id": "g004",
@@ -38,7 +41,8 @@
    "hours": 71.6,
    "rank": 5,
    "order": 5,
-   "finished": null
+   "finished": null,
+   "steamAppId": 367520
   },
   {
    "id": "g006",
@@ -46,7 +50,8 @@
    "hours": 30,
    "rank": 6,
    "order": 6,
-   "finished": null
+   "finished": null,
+   "steamAppId": 35140
   },
   {
    "id": "g007",
@@ -54,7 +59,8 @@
    "hours": 45,
    "rank": 7,
    "order": 7,
-   "finished": null
+   "finished": null,
+   "steamAppId": 200260
   },
   {
    "id": "g008",
@@ -62,7 +68,8 @@
    "hours": 103.8,
    "rank": 8,
    "order": 8,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1030300
   },
   {
    "id": "g009",
@@ -70,7 +77,8 @@
    "hours": 63.6,
    "rank": 9,
    "order": 9,
-   "finished": null
+   "finished": null,
+   "steamAppId": 570940
   },
   {
    "id": "g010",
@@ -78,7 +86,8 @@
    "hours": 44.4,
    "rank": 10,
    "order": 10,
-   "finished": null
+   "finished": null,
+   "steamAppId": 209000
   },
   {
    "id": "g011",
@@ -86,7 +95,8 @@
    "hours": 14.4,
    "rank": null,
    "order": 11,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1426210
   },
   {
    "id": "g012",
@@ -118,7 +128,8 @@
    "hours": 31.6,
    "rank": 15,
    "order": 15,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1627720
   },
   {
    "id": "g016",
@@ -142,7 +153,8 @@
    "hours": 6.5,
    "rank": 21,
    "order": 18,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1222700
   },
   {
    "id": "g019",
@@ -174,7 +186,8 @@
    "hours": 38.5,
    "rank": 24,
    "order": 22,
-   "finished": null
+   "finished": null,
+   "steamAppId": 552520
   },
   {
    "id": "g023",
@@ -190,7 +203,8 @@
    "hours": 35,
    "rank": 20,
    "order": 24,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1817070
   },
   {
    "id": "g025",
@@ -198,7 +212,8 @@
    "hours": 7.3,
    "rank": 26,
    "order": 25,
-   "finished": null
+   "finished": null,
+   "steamAppId": 368370
   },
   {
    "id": "g026",
@@ -206,7 +221,8 @@
    "hours": 21.6,
    "rank": 27,
    "order": 26,
-   "finished": null
+   "finished": null,
+   "steamAppId": 391220
   },
   {
    "id": "g027",
@@ -214,7 +230,8 @@
    "hours": 11.4,
    "rank": 28,
    "order": 27,
-   "finished": null
+   "finished": null,
+   "steamAppId": 203160
   },
   {
    "id": "g028",
@@ -222,7 +239,8 @@
    "hours": 15,
    "rank": 29,
    "order": 28,
-   "finished": null
+   "finished": null,
+   "steamAppId": 535480
   },
   {
    "id": "g029",
@@ -230,7 +248,8 @@
    "hours": 23,
    "rank": 30,
    "order": 29,
-   "finished": null
+   "finished": null,
+   "steamAppId": 534550
   },
   {
    "id": "g030",
@@ -238,7 +257,8 @@
    "hours": 9,
    "rank": 31,
    "order": 30,
-   "finished": null
+   "finished": null,
+   "steamAppId": 275390
   },
   {
    "id": "g031",
@@ -246,7 +266,8 @@
    "hours": 12,
    "rank": 32,
    "order": 31,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1817190
   },
   {
    "id": "g032",
@@ -262,7 +283,8 @@
    "hours": 11.7,
    "rank": 34,
    "order": 33,
-   "finished": null
+   "finished": null,
+   "steamAppId": 728880
   },
   {
    "id": "g034",
@@ -270,7 +292,8 @@
    "hours": 18,
    "rank": 35,
    "order": 34,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1147560
   },
   {
    "id": "g035",
@@ -286,7 +309,8 @@
    "hours": 96.7,
    "rank": 37,
    "order": 36,
-   "finished": null
+   "finished": null,
+   "steamAppId": 335300
   },
   {
    "id": "g037",
@@ -294,7 +318,8 @@
    "hours": 16,
    "rank": 38,
    "order": 37,
-   "finished": null
+   "finished": null,
+   "steamAppId": 409710
   },
   {
    "id": "g038",
@@ -318,7 +343,8 @@
    "hours": 8,
    "rank": 19,
    "order": 40,
-   "finished": null
+   "finished": null,
+   "steamAppId": 414700
   },
   {
    "id": "g041",
@@ -326,7 +352,8 @@
    "hours": 25.7,
    "rank": 41,
    "order": 41,
-   "finished": null
+   "finished": null,
+   "steamAppId": 617290
   },
   {
    "id": "g042",
@@ -350,7 +377,8 @@
    "hours": 12,
    "rank": 44,
    "order": 44,
-   "finished": null
+   "finished": null,
+   "steamAppId": 409720
   },
   {
    "id": "g045",
@@ -366,7 +394,8 @@
    "hours": 3,
    "rank": 46,
    "order": 46,
-   "finished": null
+   "finished": null,
+   "steamAppId": 304430
   },
   {
    "id": "g047",
@@ -390,7 +419,8 @@
    "hours": 15.2,
    "rank": 49,
    "order": 49,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1374970
   },
   {
    "id": "g050",
@@ -406,7 +436,8 @@
    "hours": 9.5,
    "rank": null,
    "order": 51,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1132910
   },
   {
    "id": "g052",
@@ -422,7 +453,8 @@
    "hours": 8.4,
    "rank": null,
    "order": 53,
-   "finished": null
+   "finished": null,
+   "steamAppId": 809880
   },
   {
    "id": "g054",
@@ -430,7 +462,8 @@
    "hours": 3,
    "rank": null,
    "order": 54,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1295920
   },
   {
    "id": "g055",
@@ -446,7 +479,8 @@
    "hours": 38.8,
    "rank": null,
    "order": 56,
-   "finished": null
+   "finished": null,
+   "steamAppId": 289650
   },
   {
    "id": "g057",
@@ -454,7 +488,8 @@
    "hours": 30,
    "rank": null,
    "order": 57,
-   "finished": null
+   "finished": null,
+   "steamAppId": 678960
   },
   {
    "id": "g058",
@@ -462,7 +497,8 @@
    "hours": 3.6,
    "rank": null,
    "order": 58,
-   "finished": null
+   "finished": null,
+   "steamAppId": 2069040
   },
   {
    "id": "g059",
@@ -470,7 +506,8 @@
    "hours": 8.6,
    "rank": null,
    "order": 59,
-   "finished": null
+   "finished": null,
+   "steamAppId": 865360
   },
   {
    "id": "g060",
@@ -478,7 +515,8 @@
    "hours": 6.5,
    "rank": null,
    "order": 60,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1225570
   },
   {
    "id": "g061",
@@ -486,7 +524,8 @@
    "hours": 20.9,
    "rank": null,
    "order": 61,
-   "finished": null
+   "finished": null,
+   "steamAppId": 337000
   },
   {
    "id": "g062",
@@ -494,7 +533,8 @@
    "hours": 3.3,
    "rank": null,
    "order": 62,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1071870
   },
   {
    "id": "g063",
@@ -518,7 +558,8 @@
    "hours": 3.5,
    "rank": null,
    "order": 65,
-   "finished": null
+   "finished": null,
+   "steamAppId": 48000
   },
   {
    "id": "g066",
@@ -536,7 +577,8 @@
    "rank": null,
    "order": 67,
    "finished": null,
-   "cover": "covers/custom/g067-mwcg1rbf.jpg"
+   "cover": "covers/custom/g067-mwcg1rbf.jpg",
+   "steamAppId": 582500
   },
   {
    "id": "g068",
@@ -544,7 +586,8 @@
    "hours": 37.3,
    "rank": null,
    "order": 68,
-   "finished": null
+   "finished": null,
+   "steamAppId": 1809540
   },
   {
    "id": "g069",
@@ -552,7 +595,8 @@
    "hours": 272.4,
    "rank": 11,
    "order": 69,
-   "finished": null
+   "finished": null,
+   "steamAppId": 2379780
   },
   {
    "id": "gmwcfewax",
@@ -560,7 +604,17 @@
    "hours": 18,
    "rank": null,
    "order": 70,
-   "finished": "2026-11-11"
+   "finished": "2026-11-11",
+   "steamAppId": 241930
+  },
+  {
+   "id": "gmwcg2tdp",
+   "title": "Shadow of the Tomb Raider",
+   "hours": 16.8,
+   "rank": null,
+   "order": 71,
+   "finished": null,
+   "steamAppId": 750920
   }
  ]
 }
