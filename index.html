@@ -1,0 +1,1061 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060407">
+<meta name="description" content="Every game Imaaz has beaten, ranked, with hours played.">
+<meta property="og:title" content="Imaaz's Game Shelf">
+<meta property="og:description" content="Every game Imaaz has beaten, ranked, with hours played.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23060407'/%3E%3Cg stroke='%23ff4d6d' stroke-width='2' stroke-linecap='round' fill='none'%3E%3Cpath d='M16 18c-3-4-8-4-10-1'/%3E%3Cpath d='M16 18c3-4 8-4 10-1'/%3E%3Cpath d='M16 18c-1-5-4-9-7-10'/%3E%3Cpath d='M16 18c1-5 4-9 7-10'/%3E%3Cpath d='M16 18V5'/%3E%3Cpath d='M16 18c0 4 1 7 2 10' stroke='%236e0a1b'/%3E%3C/g%3E%3C/svg%3E">
+<title>Imaaz's Game Shelf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Shippori+Mincho:wght@600;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: stark black ground, a red spider lily blooming from the header's right edge, a slash-ruled stat strip, then a dense grid of cover tiles. Committed dark, single theme. */
+:root {
+  --bg: #09090a;
+  --surface: #121214;
+  --raised: #1b1b1e;
+  --line: #2a2a2e;
+  --fg: #f3f1ee;
+  --muted: #8d8a88;
+  --red: #c4122f;
+  --red-deep: #6e0a1b;
+  --red-ink: #ffffff;
+  --display: "Anton", "Impact", "Arial Narrow", sans-serif;
+  --kanji: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--fg); }
+body { font-family: var(--body); font-size: 15px; line-height: 1.5; min-height: 100%; }
+::selection { background: var(--red); color: #fff; }
+
+.wrap {
+  max-width: 980px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 120px;
+  display: flex; flex-direction: column; gap: 26px;
+}
+
+/* header */
+header { position: relative; min-height: 240px; display: flex; align-items: flex-end; overflow: hidden; }
+#lily { position: absolute; right: -30px; top: -16px; width: 320px; height: 320px; pointer-events: none; }
+@media (max-width: 480px) { #lily { right: -70px; opacity: .85; } }
+.vert {
+  position: absolute; left: 0; top: 4px;
+  writing-mode: vertical-rl; font-family: var(--kanji); font-weight: 800;
+  font-size: 15px; letter-spacing: .35em; color: var(--red);
+}
+.title-block { position: relative; z-index: 1; padding-left: 30px; display: flex; flex-direction: column; gap: 6px; }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+h1 {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(54px, 15vw, 96px); line-height: .86; margin: 0;
+  text-transform: uppercase; letter-spacing: .01em;
+}
+h1 .r { color: var(--red); display: block; }
+.slash { height: 3px; width: 120px; background: var(--red); transform: skewX(-30deg); margin-top: 8px; }
+
+/* stats */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.stat { padding: 14px 10px 14px 0; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.stat + .stat { padding-left: 14px; border-left: 1px solid var(--line); }
+.stat .lbl { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.stat .num { font-family: var(--display); font-size: clamp(26px, 7vw, 38px); line-height: 1.05; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stat .num small { font-family: var(--body); font-size: 13px; font-weight: 700; color: var(--red); margin-left: 3px; }
+.stat .sub { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stat.hot .num { color: var(--red); }
+@media (max-width: 560px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat:nth-child(3) { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+  .stat:nth-child(4) { border-top: 1px solid var(--line); }
+}
+
+/* toolbar */
+.bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.search {
+  flex: 1 1 200px; min-width: 0; background: var(--surface); border: 1px solid var(--line);
+  color: var(--fg); font: inherit; padding: 10px 14px; border-radius: 2px;
+}
+.search::placeholder { color: var(--muted); }
+.search:focus-visible, .field input:focus-visible { outline: 2px solid var(--red); outline-offset: 0; }
+.seg { display: inline-flex; border: 1px solid var(--line); }
+.seg button {
+  font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); background: var(--surface); border: 0; padding: 9px 13px; cursor: pointer;
+}
+.seg button[aria-pressed="true"] { background: var(--red); color: #fff; }
+.seg button:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
+
+/* shelf */
+.year { display: flex; flex-direction: column; gap: 14px; }
+.year-head { display: flex; align-items: baseline; gap: 12px; }
+.year-head h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin: 0; text-transform: uppercase; letter-spacing: .02em; }
+.year-head span { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.year-head::after { content: ""; flex: 1; height: 1px; background: var(--line); align-self: center; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 18px 12px; }
+@media (max-width: 420px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 8px; } }
+.card { display: flex; flex-direction: column; gap: 7px; background: none; border: 0; padding: 0; text-align: left; color: inherit; font: inherit; cursor: pointer; min-width: 0; }
+.cover {
+  position: relative; width: 100%; max-width: 100%; aspect-ratio: 3 / 4;
+  border-radius: 2px; overflow: hidden; background: var(--raised);
+  outline: 1px solid var(--line); outline-offset: -1px;
+  transition: transform .18s ease, outline-color .18s ease;
+}
+.card:hover .cover { transform: translateY(-3px); outline-color: var(--red); }
+.card:focus-visible { outline: none; }
+.card:focus-visible .cover { outline: 2px solid var(--red); outline-offset: 2px; }
+.cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cover canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.cover.plain { background: #0e0e10; }
+.cover.plain::before { content: ""; position: absolute; left: 10px; right: 10px; bottom: 10px; height: 2px; background: var(--red); }
+.cover.plain .gen { padding-bottom: 20px; }
+.bulk { display: inline-flex; position: relative; overflow: hidden; }
+.bulk input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.bulk:focus-within { outline: 2px solid var(--fg); outline-offset: 2px; }
+.status { border-left: 3px solid var(--red); background: var(--surface); padding: 10px 14px; font-size: 13px; display: flex; flex-direction: column; gap: 4px; }
+.status b { font-weight: 700; }
+.status .miss { color: var(--muted); overflow-wrap: anywhere; }
+.status code, .cmd { font-family: var(--mono); font-size: 12px; background: var(--bg); border: 1px solid var(--line); padding: 8px 10px; display: block; overflow-x: auto; white-space: pre; user-select: all; }
+.status .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.linkbtn { font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--red); background: none; border: 0; padding: 4px 0; cursor: pointer; }
+.linkbtn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.sgroup { display: flex; flex-direction: column; gap: 2px; }
+.sgroup-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; margin-bottom: 4px; }
+.sgroup-head h4 { margin: 0; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.sgroup p { margin: 0 0 6px; font-size: 12px; color: var(--muted); }
+.srow { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 0; cursor: pointer; }
+.srow input { width: 18px; height: 18px; accent-color: var(--red); margin: 0; }
+.srow .n { font-weight: 600; font-size: 14px; overflow-wrap: anywhere; }
+.srow .h { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.srow .h b { color: var(--fg); font-weight: 500; }
+.smeta { font-size: 12px; color: var(--muted); margin: -8px 0 0; }
+.gen {
+  position: absolute; inset: 0; padding: 10px; display: flex; align-items: flex-end;
+  font-family: var(--display); font-size: clamp(15px, 4.2vw, 19px); line-height: 1.02;
+  text-transform: uppercase; color: var(--fg); text-wrap: balance; word-break: break-word;
+}
+.hours-tag {
+  position: absolute; top: 0; right: 0;
+  font-family: var(--mono); font-size: 11px; background: var(--red); color: #fff;
+  padding: 3px 7px; font-variant-numeric: tabular-nums;
+}
+.rank-tag {
+  position: absolute; top: 0; left: 0; z-index: 1;
+  font-family: var(--display); font-size: 15px; line-height: 1; letter-spacing: .02em;
+  background: var(--fg); color: #09090a; padding: 5px 7px 4px;
+  font-variant-numeric: tabular-nums;
+}
+.rank-tag.top { background: var(--red); color: #fff; font-size: 18px; }
+.year-head .top-pick { order: 3; }
+.year-head .top-pick button { padding: 6px 10px; font-size: 11px; }
+.year-head:has(.top-pick)::after { order: 2; }
+.card .t { font-weight: 700; font-size: 13px; line-height: 1.3; overflow-wrap: anywhere; }
+.card .d { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+
+/* empty */
+.empty { border: 1px dashed var(--line); padding: 28px 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.empty h2 { font-family: var(--display); font-weight: 400; font-size: 26px; margin: 0; text-transform: uppercase; }
+.empty p { margin: 0; color: var(--muted); max-width: 52ch; }
+.note { font-size: 13px; color: var(--muted); }
+
+/* buttons */
+.btn {
+  font: inherit; font-weight: 700; font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+  border: 0; border-radius: 2px; padding: 12px 18px; cursor: pointer; background: var(--red); color: #fff;
+}
+.btn.ghost { background: var(--raised); color: var(--fg); }
+.btn.danger { background: transparent; color: var(--red); padding-inline: 4px; }
+.btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.btn:disabled { opacity: .55; cursor: default; }
+.fab {
+  position: fixed; z-index: 20;
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  padding: 15px 20px; box-shadow: 0 0 0 1px rgba(0,0,0,.6), 0 12px 30px rgba(196,18,47,.28);
+}
+
+/* sheet */
+.scrim { position: fixed; inset: 0; z-index: 30; background: rgba(0,0,0,.72); display: flex; align-items: flex-end; justify-content: center; }
+.sheet {
+  width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto;
+  background: var(--surface); border-top: 3px solid var(--red);
+  padding-left: max(18px, env(safe-area-inset-left, 0px));
+  padding-right: max(18px, env(safe-area-inset-right, 0px));
+  padding-top: 20px; padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  display: flex; flex-direction: column; gap: 16px;
+}
+@media (min-width: 640px) { .scrim { align-items: center; } }
+.sheet h3 { font-family: var(--display); font-weight: 400; font-size: 26px; margin: 0; text-transform: uppercase; }
+.form-row { display: grid; grid-template-columns: 108px minmax(0, 1fr); gap: 16px; align-items: start; }
+.fields { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.field input { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 2px; padding: 10px 12px; width: 100%; min-width: 0; }
+.field .hint { font-size: 11px; color: var(--muted); }
+.pick {
+  position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; background: var(--raised);
+  border: 1px dashed var(--line); display: flex; align-items: center; justify-content: center; text-align: center;
+  color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; padding: 8px;
+}
+.pick img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pick:focus-within { outline: 2px solid var(--red); outline-offset: 2px; }
+.pick input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.actions { display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap; }
+.actions .spacer { flex: 1; }
+.err { color: #ff5a6e; font-size: 13px; margin: 0; }
+.confirm { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) { .cover { transition: none; } .card:hover .cover { transform: none; } }
+
+/* ---- atmosphere: crimson nebula, glass panel, glowing bars ---- */
+:root {
+  --rose: #ff4d6d;
+  --blush: #ffd6dc;
+  --wine: #2a050c;
+  --panel: rgba(12, 3, 7, .62);
+  --glass: rgba(255, 255, 255, .035);
+  --line: rgba(255, 120, 140, .15);
+  --raised: rgba(255, 255, 255, .05);
+  --surface: rgba(16, 5, 9, .85);
+}
+html, body { background: #060407; }
+#bg, #petals { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; display: block; }
+#bg { z-index: 0; }
+#petals { z-index: 1; }
+.wrap {
+  position: relative; z-index: 2;
+  background: linear-gradient(180deg, rgba(8, 2, 5, .35) 0, var(--panel) 300px);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+  border-inline: 1px solid rgba(196, 18, 47, .22);
+  box-shadow: 0 0 90px rgba(0, 0, 0, .65);
+}
+h1 { text-shadow: 0 0 28px rgba(255, 77, 109, .22); }
+h1 .r, .stat.hot .num {
+  background: linear-gradient(180deg, #ff6a85 0%, #e01a3c 45%, #8b0a1f 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none;
+}
+.eyebrow { color: var(--blush); opacity: .6; }
+.slash { background: linear-gradient(90deg, var(--rose), var(--red) 60%, transparent); box-shadow: 0 0 12px rgba(255, 77, 109, .6); }
+.stats { background: var(--glass); border: 1px solid var(--line); border-radius: 4px; padding-inline: 14px; }
+.stat .lbl { color: var(--blush); opacity: .55; }
+.year-head {
+  align-items: center; padding: 9px 12px;
+  background: linear-gradient(90deg, rgba(196, 18, 47, .45), rgba(196, 18, 47, .14) 55%, rgba(196, 18, 47, 0));
+  border-left: 3px solid var(--rose);
+  box-shadow: inset 0 1px 0 rgba(255, 150, 170, .12);
+}
+.year-head::after { display: none; }
+.year-head span { margin-left: auto; color: var(--blush); opacity: .7; }
+.search, .seg button { background: rgba(0, 0, 0, .42); }
+.search { border-color: var(--line); }
+.seg { border-color: var(--line); }
+.seg button[aria-pressed="true"] { background: linear-gradient(135deg, var(--rose), var(--red) 70%); }
+.btn { background: linear-gradient(135deg, #ff4d6d, #c4122f 60%, #8b0a1f); }
+.btn.ghost { background: rgba(255, 255, 255, .05); border: 1px solid var(--line); color: var(--fg); }
+.btn.danger { background: transparent; color: var(--rose); }
+.cover { outline-color: rgba(255, 120, 140, .12); box-shadow: 0 8px 20px rgba(0, 0, 0, .55); transition: transform .18s ease, box-shadow .18s ease, outline-color .18s ease; }
+.cover.plain { background: linear-gradient(160deg, #1a0509, #0b0306 70%); }
+.card:hover .cover { box-shadow: 0 0 0 1px var(--rose), 0 10px 28px rgba(196, 18, 47, .45); }
+.card.podium .cover { outline: 2px solid var(--rose); outline-offset: -2px; animation: podium 3.6s ease-in-out infinite; }
+.card.podium .t { color: var(--blush); }
+@keyframes podium {
+  0%, 100% { box-shadow: 0 0 14px rgba(255, 77, 109, .45), 0 0 34px rgba(196, 18, 47, .25); }
+  50% { box-shadow: 0 0 22px rgba(255, 110, 135, .7), 0 0 52px rgba(196, 18, 47, .4); }
+}
+.rank-tag { background: var(--blush); color: #2a050c; }
+.rank-tag.top { background: linear-gradient(135deg, var(--rose), var(--red)); }
+.hours-tag { background: rgba(10, 2, 5, .78); color: var(--blush); border-left: 2px solid var(--rose); }
+.status { background: var(--surface); border-left-color: var(--rose); }
+.sheet { background: #12050a; border-top-color: var(--rose); box-shadow: 0 -10px 60px rgba(196, 18, 47, .25); }
+.field input { background: rgba(0, 0, 0, .45); border-color: var(--line); }
+.empty { border-color: var(--line); background: var(--glass); }
+@media (prefers-reduced-motion: reduce) { .card.podium .cover { animation: none; box-shadow: 0 0 18px rgba(255, 77, 109, .5); } }
+
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.card.ro { cursor: default; }
+.card.ro:hover .cover { transform: none; }
+.foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 14px; font-size: 12px; color: var(--muted); }
+.foot a { color: var(--blush); }
+.sheet > .note { margin: -6px 0 0; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<canvas id="petals" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header>
+    <canvas id="lily" aria-hidden="true"></canvas>
+    <div class="vert" aria-hidden="true">彼岸花</div>
+    <div class="title-block">
+      <div class="eyebrow">Every game I've beaten</div>
+      <h1>Game<span class="r">Shelf</span></h1>
+      <div class="slash" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <section class="stats" aria-label="Totals">
+    <div class="stat"><span class="lbl">Beaten</span><span class="num" id="s-count">0</span><span class="sub">games</span></div>
+    <div class="stat hot"><span class="lbl">Total time</span><span class="num" id="s-hours">0<small>h</small></span><span class="sub" id="s-days">0 days of play</span></div>
+    <div class="stat"><span class="lbl">Average</span><span class="num" id="s-avg">0<small>h</small></span><span class="sub">per game</span></div>
+    <div class="stat"><span class="lbl">Longest</span><span class="num" id="s-long">–</span><span class="sub" id="s-long-t">nothing yet</span></div>
+  </section>
+
+  <div class="bar" id="bar" hidden>
+    <input class="search" id="q" type="search" placeholder="Search games" autocomplete="off">
+    <div class="seg" role="group" aria-label="Sort">
+      <button type="button" id="sort-date" aria-pressed="true">Ranked</button>
+      <button type="button" id="sort-hours" aria-pressed="false">Hours</button>
+    </div>
+    <button type="button" class="btn ghost" id="steam-btn" hidden>Steam</button>
+  </div>
+  <div class="status" id="status" role="status" hidden></div>
+
+  <main id="shelf">
+    <div class="empty" id="empty">
+      <h2 id="empty-h">Loading the shelf…</h2>
+      <p id="empty-p">Every game Imaaz has beaten, with its cover and how long it took.</p>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <span>Covers from <a href="https://www.igdb.com" target="_blank" rel="noopener">IGDB</a> · Playtime from Steam</span>
+    <button type="button" class="linkbtn" id="edit-btn">Edit</button>
+  </footer>
+</div>
+
+<button class="btn fab" id="add" type="button" hidden>+ Add game</button>
+
+<div class="scrim" id="steam-scrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="steam-h">
+    <h3 id="steam-h">Steam</h3>
+    <p class="smeta" id="steam-meta"></p>
+    <div id="steam-body" style="display:flex;flex-direction:column;gap:18px"></div>
+    <p class="err" id="steam-err" hidden></p>
+    <div class="actions">
+      <button type="button" class="linkbtn" id="steam-sync">Sync Steam now</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn ghost" id="steam-cancel">Cancel</button>
+      <button type="button" class="btn" id="steam-apply">Apply</button>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="key-scrim" hidden>
+  <form class="sheet" id="key-form" role="dialog" aria-modal="true" aria-labelledby="key-h" novalidate>
+    <h3 id="key-h">Edit your shelf</h3>
+    <p class="note">Paste your GitHub key for game-shelf. It's saved on this device only, so friends who open your link can just look.</p>
+    <div class="field"><label for="f-token">GitHub key</label><input id="f-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…"></div>
+    <p class="err" id="key-err" hidden></p>
+    <div class="actions">
+      <span class="spacer"></span>
+      <button type="button" class="btn ghost" id="key-cancel">Cancel</button>
+      <button type="submit" class="btn" id="key-save">Save key</button>
+    </div>
+  </form>
+</div>
+
+<div class="scrim" id="scrim" hidden>
+  <form class="sheet" id="form" role="dialog" aria-modal="true" aria-labelledby="sheet-h" novalidate>
+    <h3 id="sheet-h">Add a game</h3>
+    <div class="form-row">
+      <label class="pick" id="pick">
+        <span id="pick-txt">Add your own cover</span>
+        <img id="pick-img" alt="" hidden>
+        <input type="file" id="f-cover" accept="image/*" aria-label="Cover photo">
+      </label>
+      <div class="fields">
+        <div class="field"><label for="f-title">Game</label><input id="f-title" required placeholder="Shadow of Mordor" autocomplete="off"></div>
+        <div class="field"><label for="f-rank">Rank</label><input id="f-rank" type="number" inputmode="numeric" min="1" step="1" placeholder="Unranked"><span class="hint">Optional. Games below it move down one.</span></div>
+        <div class="field"><label for="f-hours">Hours played</label><input id="f-hours" type="number" inputmode="decimal" min="0" step="0.1" placeholder="15"></div>
+        <div class="field"><label for="f-date">Finished on</label><input id="f-date" type="date"><span class="hint">Optional</span></div>
+      </div>
+    </div>
+    <p class="note" id="cover-note" hidden>Leave the cover empty and it's fetched from IGDB automatically.</p>
+    <p class="err" id="err" hidden></p>
+    <div class="confirm" id="confirm" hidden>
+      Delete this game for good?
+      <button type="button" class="btn danger" id="del-yes">Delete</button>
+      <button type="button" class="btn ghost" id="del-no">Keep it</button>
+    </div>
+    <div class="actions" id="actions">
+      <button type="button" class="btn danger" id="del" hidden>Delete</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn ghost" id="cancel">Cancel</button>
+      <button type="submit" class="btn" id="save">Save</button>
+    </div>
+  </form>
+</div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  let games = [], sortBy = "date", query = "", editing = null, newCover = null;
+  const RED = "#c4122f", DEEP = "#6e0a1b";
+
+  const num = (h) => Number(h) || 0;
+  const fmtH = (h) => (Math.round(num(h) * 10) / 10).toString();
+  const ord = (g) => Number(g.order) || 0;
+  const rk = (g) => (Number(g.rank) > 0 ? Number(g.rank) : null);
+  const topN = 20;
+  const inTop = (g) => rk(g) && rk(g) <= topN;
+  const hasDate = (g) => g.finished && /^\d{4}-\d{2}-\d{2}$/.test(g.finished);
+  const yearOf = (g) => hasDate(g) ? g.finished.slice(0, 4) : null;
+  const fmtDate = (s) => { const d = new Date(s + "T00:00:00"); return isNaN(d) ? s : d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }); };
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function seedOf(s) { let h = 2166136261; for (const c of s || "x") { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+  function rng(seed) { let s = seed || 1; return () => { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; return ((s >>> 0) % 10000) / 10000; }; }
+
+  /* ---- red spider lily (original drawing) ---- */
+  function drawLily(cv, size, opts) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = size * dpr; cv.height = size * dpr;
+    const c = cv.getContext("2d"); c.scale(dpr, dpr);
+    const r = rng(opts.seed || 7);
+    const cx = size * opts.x, cy = size * opts.y, L = size * opts.scale;
+    // stem
+    c.strokeStyle = opts.stem || "#3a0710"; c.lineWidth = Math.max(1.5, L * 0.04); c.lineCap = "round";
+    c.beginPath(); c.moveTo(cx + L * 0.25, size + 10);
+    c.quadraticCurveTo(cx + L * 0.45, cy + L * 1.2, cx, cy + L * 0.08); c.stroke();
+    // stamens (behind petals' tips, drawn first)
+    const nS = 7;
+    for (let i = 0; i < nS; i++) {
+      const a = -Math.PI * (0.12 + 0.76 * (i / (nS - 1))) + (r() - 0.5) * 0.25;
+      const len = L * (1.45 + r() * 0.35);
+      const ex = cx + Math.cos(a) * len, ey = cy + Math.sin(a) * len * 0.92 - L * 0.15;
+      const mx = cx + Math.cos(a) * len * 0.55, my = cy + Math.sin(a) * len * 0.35;
+      c.strokeStyle = RED; c.lineWidth = Math.max(0.8, L * 0.012);
+      c.beginPath(); c.moveTo(cx, cy); c.quadraticCurveTo(mx, my, ex, ey); c.stroke();
+      c.fillStyle = "#e8d9c8"; c.beginPath(); c.ellipse(ex, ey, L * 0.03, L * 0.018, a, 0, Math.PI * 2); c.fill();
+    }
+    // petals: narrow recurved ribbons
+    const nP = 6;
+    for (let i = 0; i < nP; i++) {
+      const a = -Math.PI * (0.05 + 0.9 * (i / (nP - 1))) + (r() - 0.5) * 0.2;
+      const len = L * (0.78 + r() * 0.2), w = L * (0.07 + r() * 0.02);
+      const flip = Math.cos(a) < 0 ? -1 : 1;
+      c.save(); c.translate(cx, cy); c.rotate(a);
+      const g = c.createLinearGradient(0, 0, len, 0); g.addColorStop(0, DEEP); g.addColorStop(0.35, RED); g.addColorStop(1, "#e2213f");
+      c.fillStyle = g;
+      c.beginPath();
+      c.moveTo(0, 0);
+      c.bezierCurveTo(len * 0.35, -w * 1.4 * flip, len * 0.75, -w * 1.1 * flip, len, w * 1.6 * flip);
+      c.bezierCurveTo(len * 0.92, w * 2.6 * flip, len * 0.8, w * 2.2 * flip, len * 0.86, w * 1.2 * flip);
+      c.bezierCurveTo(len * 0.7, w * 0.2 * flip, len * 0.35, w * 0.6 * flip, 0, w * 0.35 * flip);
+      c.closePath(); c.fill();
+      // wavy edge highlight
+      c.strokeStyle = "rgba(255,255,255,.18)"; c.lineWidth = 0.7;
+      c.beginPath(); c.moveTo(len * 0.2, -w * 0.6 * flip); c.quadraticCurveTo(len * 0.55, -w * 1.1 * flip, len * 0.9, w * 0.4 * flip); c.stroke();
+      c.restore();
+    }
+    // center
+    c.fillStyle = DEEP; c.beginPath(); c.arc(cx, cy, L * 0.06, 0, Math.PI * 2); c.fill();
+    // falling petal
+    if (opts.petal) {
+      c.save(); c.translate(size * 0.18, size * 0.82); c.rotate(-0.6); c.fillStyle = RED;
+      c.beginPath(); c.moveTo(0, 0); c.bezierCurveTo(L * 0.2, -L * 0.08, L * 0.35, -L * 0.04, L * 0.42, L * 0.06);
+      c.bezierCurveTo(L * 0.3, L * 0.04, L * 0.15, L * 0.06, 0, 0); c.fill(); c.restore();
+    }
+  }
+  function drawLilyRich(cv, size, seed) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = size * dpr; cv.height = size * dpr;
+    const c = cv.getContext("2d"); c.scale(dpr, dpr);
+    let s = seed || 7; const r = () => { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; return ((s >>> 0) % 10000) / 10000; };
+    const RED = "#c4122f", DEEP = "#5e0816", BRIGHT = "#ee2a48", POLLEN = "#f0d29a";
+    const cx = size * 0.56, cy = size * 0.44, R = size * 0.33;
+
+    // glow
+    const glow = c.createRadialGradient(cx, cy, 0, cx, cy, R * 1.25);
+    glow.addColorStop(0, "rgba(196,18,47,0.42)"); glow.addColorStop(0.45, "rgba(130,10,30,0.18)"); glow.addColorStop(1, "rgba(9,9,10,0)");
+    c.fillStyle = glow; c.fillRect(0, 0, size, size);
+
+    // stem
+    const sg = c.createLinearGradient(0, cy, 0, size);
+    sg.addColorStop(0, "#4a0b14"); sg.addColorStop(1, "rgba(40,6,12,0.2)");
+    c.strokeStyle = sg; c.lineWidth = Math.max(2, R * 0.035); c.lineCap = "round";
+    c.beginPath(); c.moveTo(cx, cy + R * 0.05); c.bezierCurveTo(cx + R * 0.08, cy + R * 0.7, cx + R * 0.3, cy + R * 1.2, cx + R * 0.22, size + 6); c.stroke();
+
+    // florets around the umbel, back ones first
+    const florets = [];
+    const n = 8;
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2 + (r() - 0.5) * 0.5 - Math.PI / 2;
+      const d = R * (0.04 + r() * 0.05);
+      florets.push({ a, x: cx + Math.cos(a) * d, y: cy + Math.sin(a) * d * 0.6, depth: Math.sin(a) });
+    }
+    florets.sort((p, q) => p.depth - q.depth);
+
+    function petal(x, y, ang, len, w, shade) {
+      c.save(); c.translate(x, y); c.rotate(ang);
+      const flip = r() < 0.5 ? 1 : -1;
+      const g = c.createLinearGradient(0, 0, len, 0);
+      g.addColorStop(0, DEEP); g.addColorStop(0.3, shade); g.addColorStop(0.85, BRIGHT); g.addColorStop(1, RED);
+      c.fillStyle = g;
+      c.beginPath();
+      c.moveTo(0, 0);
+      // wavy outer edge out to the tip
+      c.bezierCurveTo(len * 0.25, -w * 1.3 * flip, len * 0.5, -w * 0.4 * flip, len * 0.72, -w * 1.1 * flip);
+      c.bezierCurveTo(len * 0.9, -w * 1.5 * flip, len * 1.05, -w * 0.3 * flip, len * 0.98, w * 1.2 * flip);
+      // recurved curl at the tip
+      c.bezierCurveTo(len * 0.95, w * 3.2 * flip, len * 0.76, w * 3.4 * flip, len * 0.8, w * 1.8 * flip);
+      c.bezierCurveTo(len * 0.83, w * 1.1 * flip, len * 0.9, w * 1.6 * flip, len * 0.87, w * 0.5 * flip);
+      // inner edge back to the base
+      c.bezierCurveTo(len * 0.6, w * 0.9 * flip, len * 0.3, w * 0.2 * flip, 0, w * 0.3 * flip);
+      c.closePath(); c.fill();
+      // midrib highlight
+      c.strokeStyle = "rgba(255,190,200,0.22)"; c.lineWidth = 0.8;
+      c.beginPath(); c.moveTo(len * 0.12, -w * 0.1 * flip); c.bezierCurveTo(len * 0.45, -w * 0.5 * flip, len * 0.7, -w * 0.3 * flip, len * 0.93, w * 0.3 * flip); c.stroke();
+      // dark edge line
+      c.strokeStyle = "rgba(60,4,14,0.55)"; c.lineWidth = 0.6;
+      c.stroke();
+      c.restore();
+    }
+
+    function stamen(x, y, ang, len) {
+      const ex = x + Math.cos(ang) * len, ey = y + Math.sin(ang) * len - len * (0.25 + r() * 0.2);
+      const mx = x + Math.cos(ang) * len * 0.5 + Math.cos(ang - Math.PI / 2) * len * 0.18 * (Math.cos(ang) > 0 ? 1 : -1);
+      const my = y + Math.sin(ang) * len * 0.5 - len * 0.3;
+      c.strokeStyle = "rgba(214,30,58,0.9)"; c.lineWidth = Math.max(0.7, R * 0.008);
+      c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(mx, my, ex, ey); c.stroke();
+      c.fillStyle = POLLEN; c.beginPath(); c.ellipse(ex, ey, R * 0.022, R * 0.011, ang + 0.6, 0, Math.PI * 2); c.fill();
+    }
+
+    for (const f of florets) {
+      const shade = f.depth < 0 ? "#9c0e26" : RED;
+      for (let k = 0; k < 6; k++) {
+        const pa = f.a + (k - 2.5) * 0.16 + (r() - 0.5) * 0.22;
+        petal(f.x, f.y, pa, R * (0.5 + r() * 0.2), R * (0.028 + r() * 0.01), shade);
+      }
+    }
+    for (const f of florets) {
+      for (let k = 0; k < 6; k++) {
+        const sa = f.a + (k - 2.5) * 0.12 + (r() - 0.5) * 0.15;
+        stamen(f.x, f.y, sa, R * (0.75 + r() * 0.35));
+      }
+    }
+    // heart
+    const hg = c.createRadialGradient(cx, cy, 0, cx, cy, R * 0.12);
+    hg.addColorStop(0, "#2a0309"); hg.addColorStop(1, "rgba(42,3,9,0)");
+    c.fillStyle = hg; c.beginPath(); c.arc(cx, cy, R * 0.12, 0, Math.PI * 2); c.fill();
+
+    // one fallen petal
+    c.save(); c.translate(size * 0.14, size * 0.86); c.rotate(-0.5);
+    c.fillStyle = RED; c.beginPath(); c.moveTo(0, 0);
+    c.bezierCurveTo(R * 0.15, -R * 0.07, R * 0.3, -R * 0.03, R * 0.36, R * 0.05);
+    c.bezierCurveTo(R * 0.3, R * 0.07, R * 0.28, R * 0.02, R * 0.25, R * 0.04);
+    c.bezierCurveTo(R * 0.15, R * 0.06, R * 0.08, R * 0.04, 0, 0); c.fill(); c.restore();
+  }
+  /* ---- backdrop: crimson nebula + drifting petals ---- */
+  function drawNebula() {
+    const cv = $("bg"); const w = innerWidth, h = innerHeight; const d = Math.min(devicePixelRatio || 1, 1.5);
+    cv.width = Math.round(w * d); cv.height = Math.round(h * d);
+    const c = cv.getContext("2d"); c.setTransform(d, 0, 0, d, 0, 0);
+    let s = 1337; const r = () => { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; return ((s >>> 0) % 10000) / 10000; };
+    const M = Math.max(w, h);
+    c.fillStyle = "#060407"; c.fillRect(0, 0, w, h);
+    c.globalCompositeOperation = "lighter";
+    const cols = [[196, 18, 47], [255, 77, 109], [122, 8, 30], [255, 150, 170], [90, 6, 22], [230, 40, 70]];
+    const cloud = (x, y, rad, col, a) => {
+      const g = c.createRadialGradient(x, y, 0, x, y, rad);
+      g.addColorStop(0, `rgba(${col},${a})`); g.addColorStop(0.55, `rgba(${col},${a * 0.35})`); g.addColorStop(1, `rgba(${col},0)`);
+      c.fillStyle = g; c.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+    };
+    // main diagonal band, lower-left to upper-right
+    for (let i = 0; i < 80; i++) {
+      const t = r();
+      const x = w * (t * 1.3 - 0.15) + (r() - 0.5) * w * 0.3;
+      const y = h * (0.95 - t * 0.9) + (r() - 0.5) * h * 0.3;
+      const col = cols[Math.floor(r() * cols.length)];
+      const pale = col[1] > 100;
+      cloud(x, y, M * (0.07 + r() * 0.24), col.join(","), pale ? 0.05 + r() * 0.06 : 0.12 + r() * 0.16);
+    }
+    // a few bright cores
+    for (let i = 0; i < 5; i++) cloud(w * (0.15 + r() * 0.7), h * (0.2 + r() * 0.6), M * (0.03 + r() * 0.05), "255,120,145", 0.16 + r() * 0.12);
+    c.globalCompositeOperation = "source-over";
+    // dark dust lanes
+    for (let i = 0; i < 9; i++) {
+      const x = w * r(), y = h * r(), rad = M * (0.04 + r() * 0.1);
+      const g = c.createRadialGradient(x, y, 0, x, y, rad);
+      g.addColorStop(0, "rgba(4,1,3,.45)"); g.addColorStop(1, "rgba(4,1,3,0)");
+      c.fillStyle = g; c.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+    }
+    // vignette
+    const v = c.createRadialGradient(w / 2, h / 2, M * 0.25, w / 2, h / 2, M * 0.8);
+    v.addColorStop(0, "rgba(3,1,2,0)"); v.addColorStop(1, "rgba(3,1,2,.6)");
+    c.fillStyle = v; c.fillRect(0, 0, w, h);
+    // stars
+    const n = Math.min(700, Math.round(w * h / 3800));
+    for (let i = 0; i < n; i++) {
+      const x = r() * w, y = r() * h, big = r() > 0.95, a = 0.25 + r() * 0.7;
+      c.fillStyle = r() > 0.7 ? `rgba(255,205,215,${a})` : `rgba(255,255,255,${a})`;
+      if (!big) { const z = r() > 0.6 ? 1.2 : 0.7; c.fillRect(x, y, z, z); continue; }
+      const g = c.createRadialGradient(x, y, 0, x, y, 6);
+      g.addColorStop(0, `rgba(255,230,235,${a})`); g.addColorStop(1, "rgba(255,230,235,0)");
+      c.fillStyle = g; c.fillRect(x - 6, y - 6, 12, 12);
+      c.strokeStyle = `rgba(255,220,228,${a * 0.6})`; c.lineWidth = 0.6;
+      c.beginPath(); c.moveTo(x - 7, y); c.lineTo(x + 7, y); c.moveTo(x, y - 7); c.lineTo(x, y + 7); c.stroke();
+    }
+  }
+  let petalsRaf = 0;
+  function startPetals() {
+    const cv = $("petals"); const c = cv.getContext("2d");
+    let w = 0, h = 0, d = 1, list = [];
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const size = () => {
+      w = innerWidth; h = innerHeight; d = Math.min(devicePixelRatio || 1, 1.5);
+      cv.width = Math.round(w * d); cv.height = Math.round(h * d); c.setTransform(d, 0, 0, d, 0, 0);
+      const n = w < 600 ? 6 : 11;
+      while (list.length < n) list.push(spawn(true));
+      list.length = n;
+    };
+    const tones = ["196,18,47", "255,77,109", "224,30,62", "150,10,34"];
+    function spawn(anywhere) {
+      return { x: Math.random() * w, y: anywhere ? Math.random() * h : -20, s: 7 + Math.random() * 9, vy: 0.18 + Math.random() * 0.35,
+        sway: Math.random() * Math.PI * 2, rot: Math.random() * Math.PI * 2, vr: (Math.random() - 0.5) * 0.012,
+        tone: tones[Math.floor(Math.random() * tones.length)], a: 0.35 + Math.random() * 0.4 };
+    }
+    function petal(p) {
+      c.save(); c.translate(p.x, p.y); c.rotate(p.rot); c.fillStyle = `rgba(${p.tone},${p.a})`;
+      const L = p.s * 2.2, W = p.s * 0.45;
+      c.beginPath(); c.moveTo(0, 0);
+      c.bezierCurveTo(L * 0.3, -W, L * 0.7, -W * 0.9, L, W * 0.4);
+      c.bezierCurveTo(L * 0.85, W * 1.6, L * 0.78, W * 1.1, L * 0.8, W * 0.5);
+      c.bezierCurveTo(L * 0.55, W * 0.6, L * 0.25, W * 0.5, 0, 0);
+      c.fill(); c.restore();
+    }
+    function frame() {
+      c.clearRect(0, 0, w, h);
+      for (const p of list) {
+        p.y += p.vy; p.sway += 0.01; p.x += Math.sin(p.sway) * 0.35; p.rot += p.vr;
+        if (p.y > h + 30) Object.assign(p, spawn(false));
+        petal(p);
+      }
+      if (!still) petalsRaf = requestAnimationFrame(frame);
+    }
+    size();
+    let t = 0;
+    addEventListener("resize", () => { clearTimeout(t); t = setTimeout(() => { size(); drawNebula(); if (still) frame(); }, 150); });
+    cancelAnimationFrame(petalsRaf); frame();
+  }
+  function headerLily() { drawLilyRich($("lily"), 320, 11); }
+
+  /* ---- GitHub storage ---- */
+  const OWNER = "M-Imaaz-Tarapathi", REPO = "game-shelf", BRANCH = "main";
+  const API = `https://api.github.com/repos/${OWNER}/${REPO}`;
+  const RAW = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/`;
+  let token = ""; try { token = localStorage.getItem("gs-token") || ""; } catch (e) {}
+  let canWrite = false;
+  const localCover = {};
+  const enc = (s) => btoa(unescape(encodeURIComponent(s)));
+  const dec = (b) => decodeURIComponent(escape(atob(b.replace(/\s/g, ""))));
+  async function gh(path, opts = {}) {
+    const res = await fetch(API + path, {
+      ...opts, cache: "no-store",
+      headers: { Accept: "application/vnd.github+json", Authorization: "Bearer " + token, "X-GitHub-Api-Version": "2022-11-28", ...(opts.headers || {}) },
+    });
+    if (!res.ok) { const err = new Error("GitHub " + res.status); err.status = res.status; try { err.body = await res.json(); } catch (e) {} throw err; }
+    return res.status === 204 ? null : res.json();
+  }
+  async function readFile(path) {
+    try { const j = await gh(`/contents/${path}?ref=${BRANCH}`); return { text: dec(j.content), sha: j.sha }; }
+    catch (e) { if (e.status === 404) return null; throw e; }
+  }
+  async function loadGames() {
+    if (canWrite) { const f = await readFile("data/games.json"); return f ? JSON.parse(f.text) : { games: [] }; }
+    const res = await fetch("data/games.json?t=" + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error("load " + res.status);
+    return res.json();
+  }
+  async function commitGames(mutate, message) {
+    for (let attempt = 0; ; attempt++) {
+      const f = await readFile("data/games.json");
+      const data = f ? JSON.parse(f.text) : { games: [] };
+      if (!Array.isArray(data.games)) data.games = [];
+      const result = mutate(data);
+      const body = { message, content: enc(JSON.stringify(data, null, 1) + "\n"), branch: BRANCH };
+      if (f) body.sha = f.sha;
+      try { await gh("/contents/data/games.json", { method: "PUT", body: JSON.stringify(body) }); games = data.games; render(); return result; }
+      catch (e) { if ((e.status === 409 || e.status === 422) && attempt < 2) continue; throw e; }
+    }
+  }
+  async function putBinary(path, blob, message) {
+    const b64 = await new Promise((ok, bad) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = bad; r.readAsDataURL(blob); });
+    await gh(`/contents/${path}`, { method: "PUT", body: JSON.stringify({ message, content: b64, branch: BRANCH }) });
+  }
+  function saveError(e) {
+    if (e && (e.status === 401 || e.status === 403)) return "GitHub didn't accept your key. It may have expired. Tap “Stop editing” at the bottom and set it up again.";
+    if (e && e.status === 404) return "GitHub couldn't find the game-shelf project with this key. Check the key has access to it.";
+    return "Couldn't save. Check your connection and try again.";
+  }
+
+  /* ---- covers ---- */
+  const coverPath = (g) => g.cover || `covers/${g.id}.jpg`;
+  function genCover(container, title) {
+    container.classList.add("plain");
+    container.append(el("div", "gen", title));
+  }
+  function coverImg(g, onFail) {
+    const img = new Image(); img.alt = ""; img.loading = "lazy"; img.decoding = "async";
+    if (localCover[g.id]) { img.src = localCover[g.id]; return img; }
+    const p = coverPath(g);
+    img.src = p;
+    img.onerror = () => { if (!img.dataset.raw) { img.dataset.raw = "1"; img.src = RAW + p; } else onFail(); };
+    return img;
+  }
+
+  function renderStats() {
+    const total = games.reduce((a, g) => a + num(g.hours), 0);
+    const withH = games.filter((g) => num(g.hours) > 0);
+    $("s-count").textContent = games.length;
+    $("s-hours").firstChild.textContent = Math.round(total).toLocaleString();
+    $("s-days").textContent = Math.round(total / 24) + " days of play";
+    $("s-avg").firstChild.textContent = withH.length ? fmtH(total / withH.length) : "0";
+    const longest = withH.slice().sort((a, b) => num(b.hours) - num(a.hours))[0];
+    const L = $("s-long");
+    if (longest) { L.replaceChildren(document.createTextNode(fmtH(longest.hours)), el("small", null, "h")); $("s-long-t").textContent = longest.title; }
+    else { L.textContent = "–"; $("s-long-t").textContent = "nothing yet"; }
+  }
+
+  function card(g) {
+    const b = canWrite ? el("button", "card") : el("div", "card");
+    if (canWrite) b.type = "button"; else b.classList.add("ro");
+    if (inTop(g) && rk(g) <= 3) b.classList.add("podium");
+    b.setAttribute("aria-label", `${g.title}, ${fmtH(g.hours)} hours`);
+    const c = el("div", "cover");
+    const img = coverImg(g, () => { img.remove(); genCover(c, g.title); });
+    c.append(img);
+    if (num(g.hours) > 0) c.append(el("span", "hours-tag", fmtH(g.hours) + "h"));
+    if (inTop(g)) c.append(el("span", "rank-tag" + (rk(g) <= 3 ? " top" : ""), "#" + rk(g)));
+    b.append(c, el("span", "t", g.title));
+    if (hasDate(g)) b.append(el("span", "d", fmtDate(g.finished)));
+    if (canWrite) b.addEventListener("click", () => openSheet(g));
+    return b;
+  }
+
+  function render() {
+    renderStats();
+    const shelf = $("shelf");
+    if (!games.length) { shelf.replaceChildren($("empty")); $("bar").hidden = true; return; }
+    $("bar").hidden = false;
+    const q = query.trim().toLowerCase();
+    const list = games.filter((g) => !q || (g.title || "").toLowerCase().includes(q));
+    const out = [];
+    const section = (label, gs) => {
+      const sec = el("section", "year"); const head = el("div", "year-head");
+      head.append(el("h2", null, label), el("span", null, `${gs.length} games`));
+      const grid = el("div", "grid"); gs.forEach((g) => grid.append(card(g))); sec.append(head, grid); return sec;
+    };
+    if (!list.length) out.push(el("p", "note", "No games match that search."));
+    else if (sortBy === "hours") {
+      list.sort((a, b) => num(b.hours) - num(a.hours));
+      const grid = el("div", "grid"); list.forEach((g) => grid.append(card(g))); out.push(grid);
+    } else {
+      const top = list.filter(inTop).sort((a, b) => rk(a) - rk(b) || ord(a) - ord(b));
+      const alpha = (t) => (t || "").replace(/^the\s+/i, "");
+      const rest = list.filter((g) => !inTop(g)).sort((a, b) => alpha(a.title).localeCompare(alpha(b.title), undefined, { sensitivity: "base", numeric: true }));
+      if (top.length) out.push(section("Top " + topN, top));
+      if (rest.length) out.push(section(top.length ? "Rest of the shelf" : "Your games", rest));
+    }
+    shelf.replaceChildren(...out);
+  }
+
+  /* ---- add / edit sheet ---- */
+  function openSheet(g) {
+    if (!canWrite) return;
+    editing = g || null; newCover = null;
+    $("sheet-h").textContent = g ? "Edit game" : "Add a game";
+    $("f-title").value = g ? g.title : "";
+    $("f-hours").value = g && g.hours != null ? g.hours : "";
+    $("f-rank").value = g && rk(g) ? rk(g) : "";
+    $("f-date").value = g ? (g.finished || "") : new Date().toISOString().slice(0, 10);
+    $("f-cover").value = "";
+    setPick(g ? (localCover[g.id] || coverPath(g)) : null, g);
+    $("cover-note").hidden = !!g;
+    $("confirm").hidden = true; $("actions").hidden = false; $("err").hidden = true;
+    $("save").disabled = false; $("del").hidden = !g;
+    $("scrim").hidden = false;
+    if (!g) setTimeout(() => $("f-title").focus(), 30);
+  }
+  function closeSheet() { $("scrim").hidden = true; editing = null; newCover = null; }
+  function setPick(src, g) {
+    const img = $("pick-img");
+    const empty = () => { img.removeAttribute("src"); img.hidden = true; $("pick-txt").hidden = false; $("pick-txt").textContent = "Add your own cover"; };
+    if (!src) return empty();
+    img.onerror = () => { if (g && !img.dataset.raw && !src.startsWith("blob:")) { img.dataset.raw = "1"; img.src = RAW + src; } else empty(); };
+    img.dataset.raw = ""; img.src = src; img.hidden = false; $("pick-txt").hidden = true;
+  }
+  function showErr(m) { $("err").textContent = m; $("err").hidden = false; }
+  function shrink(file) {
+    return new Promise((resolve) => {
+      const url = URL.createObjectURL(file); const img = new Image();
+      img.onload = () => {
+        const s = Math.min(1, 700 / Math.max(img.width, img.height));
+        const cv = document.createElement("canvas"); cv.width = Math.round(img.width * s); cv.height = Math.round(img.height * s);
+        cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height); URL.revokeObjectURL(url);
+        cv.toBlob((b) => resolve(b || file), "image/jpeg", 0.86);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+      img.src = url;
+    });
+  }
+  function shiftRanks(list, selfId, oldRank, rank) {
+    const others = list.filter((g) => g.id !== selfId && rk(g));
+    const maxRank = others.reduce((m, g) => Math.max(m, rk(g)), 0);
+    if (rank != null && rank > maxRank + 1) rank = maxRank + 1;
+    if (rank === oldRank) return rank;
+    others.forEach((g) => {
+      const r = rk(g);
+      if (oldRank == null && rank != null && r >= rank) g.rank = r + 1;
+      else if (oldRank != null && rank == null && r > oldRank) g.rank = r - 1;
+      else if (oldRank != null && rank != null && rank > oldRank && r > oldRank && r <= rank) g.rank = r - 1;
+      else if (oldRank != null && rank != null && rank < oldRank && r >= rank && r < oldRank) g.rank = r + 1;
+    });
+    return rank;
+  }
+
+  $("f-cover").addEventListener("change", (e) => { const f = e.target.files && e.target.files[0]; if (!f) return; newCover = f; setPick(URL.createObjectURL(f)); });
+  $("cancel").addEventListener("click", closeSheet);
+  $("scrim").addEventListener("click", (e) => { if (e.target === $("scrim")) closeSheet(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") { if (!$("scrim").hidden) closeSheet(); if (!$("key-scrim").hidden) $("key-scrim").hidden = true; } });
+  $("add").addEventListener("click", () => openSheet(null));
+  $("del").addEventListener("click", () => { $("confirm").hidden = false; $("actions").hidden = true; });
+  $("del-no").addEventListener("click", () => { $("confirm").hidden = true; $("actions").hidden = false; });
+  $("del-yes").addEventListener("click", async () => {
+    if (!editing) return; const id = editing.id, title = editing.title;
+    $("del-yes").disabled = true;
+    try {
+      await commitGames((data) => {
+        const g = data.games.find((x) => x.id === id); if (!g) return;
+        const r = rk(g);
+        data.games = data.games.filter((x) => x.id !== id);
+        if (r) data.games.forEach((x) => { if (rk(x) > r) x.rank = rk(x) - 1; });
+      }, `Remove ${title}`);
+      closeSheet();
+    } catch (e) { $("confirm").hidden = true; $("actions").hidden = false; showErr(saveError(e)); }
+    finally { $("del-yes").disabled = false; }
+  });
+
+  $("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const title = $("f-title").value.trim();
+    if (!title) { showErr("Add the game's name."); $("f-title").focus(); return; }
+    const hr = $("f-hours").value.trim(); const hours = hr === "" ? null : Number(hr);
+    if (hours != null && (isNaN(hours) || hours < 0 || hours > 100000)) { showErr("Hours should be a number like 15 or 22.5."); return; }
+    const rRaw = $("f-rank").value.trim();
+    let rank = rRaw === "" ? null : Math.round(Number(rRaw));
+    if (rank != null && (isNaN(rank) || rank < 1)) rank = null;
+    const finished = $("f-date").value || null;
+    const id = editing ? editing.id : "g" + Date.now().toString(36);
+    const isNew = !editing;
+    $("save").disabled = true; $("save").textContent = "Saving…"; $("err").hidden = true;
+    try {
+      let cover;
+      if (newCover) {
+        const blob = await shrink(newCover);
+        cover = `covers/custom/${id}-${Date.now().toString(36)}.jpg`;
+        await putBinary(cover, blob, `Cover for ${title}`);
+        localCover[id] = URL.createObjectURL(blob);
+      }
+      await commitGames((data) => {
+        let g = data.games.find((x) => x.id === id);
+        const oldRank = g ? rk(g) : null;
+        const finalRank = shiftRanks(data.games, id, oldRank, rank);
+        if (!g) {
+          g = { id, title, hours, rank: finalRank, order: data.games.reduce((m, x) => Math.max(m, ord(x)), 0) + 1, finished };
+          data.games.push(g);
+        } else Object.assign(g, { title, hours, rank: finalRank, finished });
+        if (cover) g.cover = cover;
+      }, isNew ? `Add ${title}` : `Edit ${title}`);
+      closeSheet();
+      if (isNew && !cover) showStatus([el("b", null, `Added ${title}.`), el("span", "miss", "Its cover will appear in a minute or two, once GitHub fetches it.")]);
+    } catch (err) { showErr(saveError(err)); }
+    finally { $("save").disabled = false; $("save").textContent = "Save"; }
+  });
+
+  function showStatus(nodes) { $("status").replaceChildren(...nodes); $("status").hidden = false; }
+
+  /* ---- Steam review (data/steam.json, kept fresh by the Steam sync action) ---- */
+  const NUMS = { ii: "2", iii: "3", iv: "4", two: "2", three: "3", gta: "grandtheftauto" };
+  const DROP = new Set(["the", "marvels"]);
+  const normT = (s) => (s || "").toLowerCase().replace(/['’]/g, "").split(/[^a-z0-9]+/).filter(Boolean).map((w) => NUMS[w] || w).filter((w) => !DROP.has(w)).join("");
+  const cleanName = (s) => (s || "").replace(/[™®©]/g, "").replace(/\s+/g, " ").trim();
+  let steamPlan = null;
+  function matchSteam(name) {
+    const s = normT(name); if (!s) return null;
+    const exact = games.find((g) => normT(g.title) === s);
+    if (exact) return { g: exact, exact: true };
+    const part = games.filter((g) => { const t = normT(g.title); return t.length >= 4 && s.startsWith(t) && !/^\d/.test(s.slice(t.length)); })
+      .sort((a, b) => normT(b.title).length - normT(a.title).length);
+    return part.length ? { g: part[0], exact: false } : null;
+  }
+  function srow(checked, name, hoursNode, onChange) {
+    const lab = el("label", "srow"); const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = checked;
+    cb.addEventListener("change", () => { onChange(cb.checked); updateApply(); });
+    lab.append(cb, el("span", "n", name), hoursNode); return { lab, cb };
+  }
+  function group(title, note, rows, items) {
+    const g = el("div", "sgroup"); const head = el("div", "sgroup-head"); head.append(el("h4", null, title));
+    if (rows.length > 1) {
+      const all = el("button", "linkbtn", "Select all"); all.type = "button";
+      all.addEventListener("click", () => { const on = !rows.every((r) => r.cb.checked); rows.forEach((r, i) => { r.cb.checked = on; items[i].on = on; }); all.textContent = on ? "Clear all" : "Select all"; updateApply(); });
+      head.append(all);
+    }
+    g.append(head); if (note) g.append(el("p", null, note)); rows.forEach((r) => g.append(r.lab)); return g;
+  }
+  function updateApply() {
+    if (!steamPlan) return;
+    const n = steamPlan.updates.filter((u) => u.on).length + steamPlan.adds.filter((a) => a.on).length;
+    $("steam-apply").textContent = n ? `Apply ${n}` : "Apply"; $("steam-apply").disabled = !n;
+  }
+  function openSteam(data) {
+    const list = (data.games || []).filter((x) => x && x.name && typeof x.hours === "number");
+    const seen = new Map(), adds = [];
+    list.forEach((x) => {
+      const m = matchSteam(x.name);
+      if (m) { const prev = seen.get(m.g.id); if (!prev || x.hours > prev.x.hours) seen.set(m.g.id, { g: m.g, x, exact: m.exact }); }
+      else if (x.hours >= 1) adds.push({ x, on: false });
+    });
+    const matched = [...seen.values()];
+    const updates = matched.filter((m) => Math.abs(num(m.g.hours) - m.x.hours) >= 0.5).map((m) => ({ ...m, on: false }));
+    const close = matched.length - updates.length;
+    steamPlan = { updates, adds, matched };
+    $("steam-meta").textContent = `${list.length} Steam games${data.exported ? " · synced " + data.exported : ""} · ${matched.length} on your shelf`;
+    const body = [];
+    if (updates.length) {
+      const rows = updates.sort((a, b) => b.x.hours - a.x.hours).map((u) => {
+        const h = el("span", "h"); h.append(`${fmtH(u.g.hours)} → `, el("b", null, fmtH(u.x.hours) + "h"));
+        return srow(false, u.g.title + (u.exact ? "" : `  (Steam: ${cleanName(u.x.name)})`), h, (v) => { u.on = v; });
+      });
+      body.push(group("Update hours", "Steam's playtime differs from yours. Tick the ones where Steam is right. Skip games you also played elsewhere.", rows, updates));
+    }
+    if (close) body.push(el("p", "note", `${close} more ${close === 1 ? "game matches" : "games match"} within half an hour. Nothing to change.`));
+    if (adds.length) {
+      const rows = adds.map((a) => srow(false, cleanName(a.x.name), el("span", "h", fmtH(a.x.hours) + "h"), (v) => { a.on = v; }));
+      body.push(group("On Steam, not on your shelf", "Steam can't tell which ones you finished. Tick the ones you beat to add them.", rows, adds));
+    }
+    if (!body.length) body.push(el("p", "note", "Nothing new. Your shelf already matches Steam."));
+    $("steam-body").replaceChildren(...body);
+    $("steam-err").hidden = true; updateApply();
+    $("steam-scrim").hidden = false;
+  }
+  function closeSteam() { $("steam-scrim").hidden = true; steamPlan = null; }
+  $("steam-cancel").addEventListener("click", closeSteam);
+  $("steam-scrim").addEventListener("click", (e) => { if (e.target === $("steam-scrim")) closeSteam(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("steam-scrim").hidden) closeSteam(); });
+  $("steam-btn").addEventListener("click", async () => {
+    const btn = $("steam-btn"); btn.disabled = true;
+    try {
+      const f = await readFile("data/steam.json");
+      if (!f) { showStatus([el("b", null, "No Steam data yet."), el("span", "miss", "Tap “Sync Steam now” in the Steam window after adding your Steam secrets on GitHub.")]); return; }
+      openSteam(JSON.parse(f.text));
+    } catch (e) { showStatus([el("b", null, "Couldn't load Steam data."), el("span", "miss", saveError(e))]); }
+    finally { btn.disabled = false; }
+  });
+  $("steam-sync").addEventListener("click", async () => {
+    const b = $("steam-sync"); b.disabled = true;
+    try {
+      await gh("/actions/workflows/steam.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: BRANCH }) });
+      $("steam-err").textContent = "Steam sync started. It takes about a minute. Close this and tap Steam again after that.";
+      $("steam-err").hidden = false;
+    } catch (e) {
+      $("steam-err").textContent = e.status === 403 ? "Your GitHub key needs the Actions permission (read and write) to start a sync." : saveError(e);
+      $("steam-err").hidden = false;
+    } finally { b.disabled = false; }
+  });
+  $("steam-apply").addEventListener("click", async () => {
+    if (!steamPlan) return;
+    const plan = steamPlan; const btn = $("steam-apply"); btn.disabled = true; btn.textContent = "Saving…";
+    const ups = plan.updates.filter((u) => u.on).map((u) => ({ id: u.g.id, hours: u.x.hours, appid: u.x.appid }));
+    const adds = plan.adds.filter((a) => a.on).map((a) => ({ title: cleanName(a.x.name), hours: a.x.hours, appid: a.x.appid }));
+    const tags = plan.matched.map((m) => ({ id: m.g.id, appid: m.x.appid }));
+    try {
+      await commitGames((data) => {
+        const byId = new Map(data.games.map((g) => [g.id, g]));
+        tags.forEach((t) => { const g = byId.get(t.id); if (g && !g.steamAppId) g.steamAppId = t.appid; });
+        ups.forEach((u) => { const g = byId.get(u.id); if (g) g.hours = u.hours; });
+        let next = data.games.reduce((m, g) => Math.max(m, ord(g)), 0);
+        adds.forEach((a, i) => data.games.push({ id: "g" + (Date.now() + i).toString(36), title: a.title, hours: a.hours, rank: null, order: ++next, finished: null, steamAppId: a.appid }));
+      }, `Steam: ${ups.length} hours updated, ${adds.length} added`);
+      closeSteam();
+      const nodes = [el("b", null, `Updated hours on ${ups.length} ${ups.length === 1 ? "game" : "games"}, added ${adds.length}.`)];
+      if (adds.length) nodes.push(el("span", "miss", "Covers for the new games will appear in a minute or two."));
+      showStatus(nodes);
+    } catch (e) { $("steam-err").textContent = saveError(e); $("steam-err").hidden = false; }
+    finally { btn.disabled = false; updateApply(); }
+  });
+
+  /* ---- edit mode: GitHub key, saved on this device only ---- */
+  function setMode() {
+    $("add").hidden = !canWrite;
+    $("steam-btn").hidden = !canWrite;
+    $("edit-btn").textContent = canWrite ? "Stop editing on this device" : "Edit";
+  }
+  $("edit-btn").addEventListener("click", () => {
+    if (canWrite) {
+      try { localStorage.removeItem("gs-token"); } catch (e) {}
+      token = ""; canWrite = false; setMode(); render();
+      showStatus([el("b", null, "Editing turned off on this device.")]);
+      return;
+    }
+    $("f-token").value = ""; $("key-err").hidden = true; $("key-scrim").hidden = false;
+    setTimeout(() => $("f-token").focus(), 30);
+  });
+  $("key-cancel").addEventListener("click", () => { $("key-scrim").hidden = true; });
+  $("key-scrim").addEventListener("click", (e) => { if (e.target === $("key-scrim")) $("key-scrim").hidden = true; });
+  $("key-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const t = $("f-token").value.trim(); if (!t) return;
+    const btn = $("key-save"); btn.disabled = true; btn.textContent = "Checking…"; $("key-err").hidden = true;
+    const prev = token; token = t;
+    try {
+      const repo = await gh("");
+      if (!repo.permissions || !repo.permissions.push) throw Object.assign(new Error("no push"), { status: 403 });
+      try { localStorage.setItem("gs-token", t); } catch (err) {}
+      canWrite = true; setMode(); $("key-scrim").hidden = true;
+      const data = await loadGames(); games = data.games || []; render();
+      showStatus([el("b", null, "You can edit on this device now."), el("span", "miss", "Tap any game to change it, or “+ Add game” for a new one.")]);
+    } catch (err) {
+      token = prev;
+      $("key-err").textContent = err.status === 401 ? "GitHub didn't accept that key. Copy it again and paste the whole thing."
+        : err.status === 403 || err.status === 404 ? "That key can't edit game-shelf. Give it access to the game-shelf project with Contents set to Read and write."
+        : "Couldn't reach GitHub. Check your connection and try again.";
+      $("key-err").hidden = false;
+    } finally { btn.disabled = false; btn.textContent = "Save key"; }
+  });
+
+  $("q").addEventListener("input", (e) => { query = e.target.value; render(); });
+  $("sort-date").addEventListener("click", () => { sortBy = "date"; $("sort-date").setAttribute("aria-pressed", "true"); $("sort-hours").setAttribute("aria-pressed", "false"); render(); });
+  $("sort-hours").addEventListener("click", () => { sortBy = "hours"; $("sort-hours").setAttribute("aria-pressed", "true"); $("sort-date").setAttribute("aria-pressed", "false"); render(); });
+
+  function setEmpty(h, p) { $("empty-h").textContent = h; $("empty-p").textContent = p; }
+  async function boot() {
+    try { drawNebula(); startPetals(); } catch (e) {}
+    headerLily();
+    if (token) {
+      try { const repo = await gh(""); canWrite = !!(repo.permissions && repo.permissions.push); } catch (e) { canWrite = false; }
+      if (!canWrite) showStatus([el("b", null, "Your GitHub key stopped working on this device."), el("span", "miss", "Tap “Edit” at the bottom to set it up again.")]);
+    }
+    setMode();
+    try {
+      const data = await loadGames();
+      games = data.games || [];
+      if (!games.length) setEmpty("No games yet", canWrite ? "Tap “+ Add game” to log the first one you've beaten." : "Check back soon.");
+      render();
+    } catch (e) { setEmpty("Couldn't load the shelf", "Reload the page to try again."); }
+  }
+  boot();
+})();
+</script>
+</body>
+</html>
