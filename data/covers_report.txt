@@ -1,5 +1,5 @@
-Last run: 2026-11-11 18:15 UTC
-Added 1 covers, not found 1.
+Last run: 2026-11-11 18:19 UTC
+Added 0 covers, not found 1.
 
 No cover found (add a better name or IGDB id to data/overrides.json, or upload one on the site):
   We Were Here
