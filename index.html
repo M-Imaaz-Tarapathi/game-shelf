@@ -288,6 +288,28 @@ img { max-width: 100%; }
 .foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 14px; font-size: 12px; color: var(--muted); }
 .foot a { color: var(--blush); }
 .sheet > .note { margin: -6px 0 0; color: var(--muted); font-size: 13px; }
+
+/* now playing strip */
+.now { display: flex; flex-direction: column; gap: 10px; }
+.now-card {
+  display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px; align-items: stretch;
+  padding: 12px; background: linear-gradient(100deg, rgba(196, 18, 47, .28), rgba(196, 18, 47, .06) 60%, rgba(0, 0, 0, .2));
+  border: 1px solid var(--line); border-left: 3px solid var(--rose); border-radius: 4px;
+  box-shadow: 0 0 30px rgba(196, 18, 47, .18); color: inherit; font: inherit; text-align: left;
+}
+.now-card .cover { width: 92px; }
+.now-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; justify-content: center; }
+.now-eyebrow { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--blush); }
+.now-eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 10px var(--rose); animation: livepulse 1.8s ease-in-out infinite; }
+@keyframes livepulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.now-title { font-family: var(--display); font-weight: 400; font-size: clamp(24px, 6vw, 34px); line-height: 1; margin: 0; text-transform: uppercase; overflow-wrap: anywhere; }
+.now-hours { font-family: var(--display); font-size: 22px; line-height: 1; color: var(--fg); font-variant-numeric: tabular-nums; }
+.now-hours small { font-family: var(--body); font-size: 12px; font-weight: 700; color: var(--rose); margin-left: 4px; letter-spacing: .04em; }
+.now-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.now-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 2px; }
+.check { display: flex; gap: 10px; align-items: center; font-size: 13px; font-weight: 600; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--red); margin: 0; }
+@media (prefers-reduced-motion: reduce) { .now-eyebrow i { animation: none; } }
 </style>
 </head>
 <body>
@@ -310,6 +332,8 @@ img { max-width: 100%; }
     <div class="stat"><span class="lbl">Average</span><span class="num" id="s-avg">0<small>h</small></span><span class="sub">per game</span></div>
     <div class="stat"><span class="lbl">Longest</span><span class="num" id="s-long">–</span><span class="sub" id="s-long-t">nothing yet</span></div>
   </section>
+
+  <section class="now" id="now" aria-label="Now playing" hidden></section>
 
   <div class="bar" id="bar" hidden>
     <input class="search" id="q" type="search" placeholder="Search games" autocomplete="off">
@@ -379,6 +403,7 @@ img { max-width: 100%; }
         <div class="field"><label for="f-rank">Rank</label><input id="f-rank" type="number" inputmode="numeric" min="1" step="1" placeholder="Unranked"><span class="hint">Optional. Games below it move down one.</span></div>
         <div class="field"><label for="f-hours">Hours played</label><input id="f-hours" type="number" inputmode="decimal" min="0" step="0.1" placeholder="15"></div>
         <div class="field"><label for="f-date">Finished on</label><input id="f-date" type="date"><span class="hint">Optional</span></div>
+        <div class="field"><label class="check"><input type="checkbox" id="f-playing"> Playing it now</label><span class="hint">Shows up top under Now playing instead of on the shelf.</span></div>
       </div>
     </div>
     <p class="note" id="cover-note" hidden>Leave the cover empty and it's fetched from IGDB automatically.</p>
@@ -400,7 +425,9 @@ img { max-width: 100%; }
 <script>
 (function () {
   const $ = (id) => document.getElementById(id);
-  let games = [], sortBy = "date", query = "", editing = null, newCover = null;
+  let games = [], sortBy = "date", query = "", editing = null, newCover = null, steamData = null;
+  const isPlaying = (g) => !!g.playing;
+  const beaten = () => games.filter((g) => !isPlaying(g));
   const RED = "#c4122f", DEEP = "#6e0a1b";
 
   const num = (h) => Number(h) || 0;
@@ -715,9 +742,10 @@ img { max-width: 100%; }
   }
 
   function renderStats() {
-    const total = games.reduce((a, g) => a + num(g.hours), 0);
-    const withH = games.filter((g) => num(g.hours) > 0);
-    $("s-count").textContent = games.length;
+    const done = beaten();
+    const total = done.reduce((a, g) => a + num(g.hours), 0);
+    const withH = done.filter((g) => num(g.hours) > 0);
+    $("s-count").textContent = done.length;
     $("s-hours").firstChild.textContent = Math.round(total).toLocaleString();
     $("s-days").textContent = Math.round(total / 24) + " days of play";
     $("s-avg").firstChild.textContent = withH.length ? fmtH(total / withH.length) : "0";
@@ -743,13 +771,76 @@ img { max-width: 100%; }
     return b;
   }
 
+  /* ---- now playing ---- */
+  function steamFor(g) {
+    if (!steamData || !g.steamAppId) return null;
+    return (steamData.games || []).find((x) => x.appid === g.steamAppId) || null;
+  }
+  const liveHours = (g) => { const x = steamFor(g); return x && typeof x.hours === "number" ? x.hours : (g.hours == null ? null : num(g.hours)); };
+  function nowCard(g) {
+    const box = el("div", "now-card");
+    const c = el("div", "cover");
+    const img = coverImg(g, () => { img.remove(); genCover(c, g.title); });
+    c.append(img);
+    const body = el("div", "now-body");
+    const eb = el("div", "now-eyebrow"); eb.append(el("i"), "Now playing");
+    const x = steamFor(g), h = liveHours(g);
+    const hrs = el("div", "now-hours");
+    if (h != null && h >= 0.1) hrs.append(fmtH(h), el("small", null, x ? "h on Steam" : "h"));
+    else hrs.append("Just started");
+    const meta = [];
+    if (x && x.last_played) meta.push("Last played " + fmtDate(x.last_played));
+    if (x && steamData.exported) meta.push("Steam synced " + fmtDate(steamData.exported));
+    body.append(eb, el("h2", "now-title", g.title), hrs);
+    if (meta.length) body.append(el("div", "now-meta", meta.join(" · ")));
+    if (canWrite) {
+      const acts = el("div", "now-actions");
+      const fin = el("button", "btn", "Finished it"); fin.type = "button";
+      fin.addEventListener("click", () => finishGame(g, fin));
+      const ed = el("button", "linkbtn", "Edit"); ed.type = "button";
+      ed.addEventListener("click", () => openSheet(g));
+      acts.append(fin, ed); body.append(acts);
+    }
+    box.append(c, body);
+    return box;
+  }
+  function renderNow() {
+    const playing = games.filter(isPlaying).sort((a, b) => ord(b) - ord(a));
+    $("now").hidden = !playing.length;
+    $("now").replaceChildren(...playing.map(nowCard));
+  }
+  async function finishGame(g, btn) {
+    const id = g.id, title = g.title, h = liveHours(g), today = new Date().toISOString().slice(0, 10);
+    btn.disabled = true; btn.textContent = "Saving…";
+    try {
+      await commitGames((data) => {
+        const x = data.games.find((y) => y.id === id); if (!x) return;
+        delete x.playing;
+        if (h != null) x.hours = Math.round(h * 10) / 10;
+        if (!x.finished) x.finished = today;
+        x.order = data.games.reduce((m, y) => Math.max(m, ord(y)), 0) + 1;
+      }, `Finished ${title}`);
+      showStatus([el("b", null, `${title} is on the shelf.`), el("span", "miss", "Give it a rank if it earned one.")]);
+      const done = games.find((y) => y.id === id); if (done) openSheet(done);
+    } catch (e) { showStatus([el("b", null, "Couldn't save."), el("span", "miss", saveError(e))]); btn.disabled = false; btn.textContent = "Finished it"; }
+  }
+  async function loadSteamData() {
+    try {
+      if (canWrite) { const f = await readFile("data/steam.json"); steamData = f ? JSON.parse(f.text) : null; }
+      else { const r = await fetch("data/steam.json?t=" + Date.now(), { cache: "no-store" }); steamData = r.ok ? await r.json() : null; }
+    } catch (e) { steamData = null; }
+    renderNow();
+  }
+
   function render() {
     renderStats();
+    renderNow();
     const shelf = $("shelf");
-    if (!games.length) { shelf.replaceChildren($("empty")); $("bar").hidden = true; return; }
+    const done = beaten();
+    if (!done.length) { shelf.replaceChildren($("empty")); $("bar").hidden = true; return; }
     $("bar").hidden = false;
     const q = query.trim().toLowerCase();
-    const list = games.filter((g) => !q || (g.title || "").toLowerCase().includes(q));
+    const list = done.filter((g) => !q || (g.title || "").toLowerCase().includes(q));
     const out = [];
     const section = (label, gs) => {
       const sec = el("section", "year"); const head = el("div", "year-head");
@@ -779,6 +870,7 @@ img { max-width: 100%; }
     $("f-hours").value = g && g.hours != null ? g.hours : "";
     $("f-rank").value = g && rk(g) ? rk(g) : "";
     $("f-date").value = g ? (g.finished || "") : new Date().toISOString().slice(0, 10);
+    $("f-playing").checked = !!(g && g.playing);
     $("f-cover").value = "";
     setPick(g ? (localCover[g.id] || coverPath(g)) : null, g);
     $("cover-note").hidden = !!g;
@@ -855,7 +947,9 @@ img { max-width: 100%; }
     const rRaw = $("f-rank").value.trim();
     let rank = rRaw === "" ? null : Math.round(Number(rRaw));
     if (rank != null && (isNaN(rank) || rank < 1)) rank = null;
-    const finished = $("f-date").value || null;
+    const playingNow = $("f-playing").checked;
+    if (playingNow) rank = null;
+    const finished = playingNow ? null : ($("f-date").value || null);
     const id = editing ? editing.id : "g" + Date.now().toString(36);
     const isNew = !editing;
     $("save").disabled = true; $("save").textContent = "Saving…"; $("err").hidden = true;
@@ -875,6 +969,7 @@ img { max-width: 100%; }
           g = { id, title, hours, rank: finalRank, order: data.games.reduce((m, x) => Math.max(m, ord(x)), 0) + 1, finished };
           data.games.push(g);
         } else Object.assign(g, { title, hours, rank: finalRank, finished });
+        if (playingNow) g.playing = true; else delete g.playing;
         if (cover) g.cover = cover;
       }, isNew ? `Add ${title}` : `Edit ${title}`);
       closeSheet();
@@ -922,7 +1017,9 @@ img { max-width: 100%; }
     const list = (data.games || []).filter((x) => x && x.name && typeof x.hours === "number");
     const seen = new Map(), adds = [];
     list.forEach((x) => {
-      const m = matchSteam(x.name);
+      const byApp = games.find((g) => g.steamAppId && g.steamAppId === x.appid);
+      const m = byApp ? { g: byApp, exact: true } : matchSteam(x.name);
+      if (m && isPlaying(m.g)) return;
       if (m) { const prev = seen.get(m.g.id); if (!prev || x.hours > prev.x.hours) seen.set(m.g.id, { g: m.g, x, exact: m.exact }); }
       else if (x.hours >= 1) adds.push({ x, on: false });
     });
@@ -1023,7 +1120,7 @@ img { max-width: 100%; }
       if (!repo.permissions || !repo.permissions.push) throw Object.assign(new Error("no push"), { status: 403 });
       try { localStorage.setItem("gs-token", t); } catch (err) {}
       canWrite = true; setMode(); $("key-scrim").hidden = true;
-      const data = await loadGames(); games = data.games || []; render();
+      const data = await loadGames(); games = data.games || []; render(); loadSteamData();
       showStatus([el("b", null, "You can edit on this device now."), el("span", "miss", "Tap any game to change it, or “+ Add game” for a new one.")]);
     } catch (err) {
       token = prev;
@@ -1050,8 +1147,9 @@ img { max-width: 100%; }
     try {
       const data = await loadGames();
       games = data.games || [];
-      if (!games.length) setEmpty("No games yet", canWrite ? "Tap “+ Add game” to log the first one you've beaten." : "Check back soon.");
+      if (!beaten().length) setEmpty("No games yet", canWrite ? "Tap “+ Add game” to log the first one you've beaten." : "Check back soon.");
       render();
+      loadSteamData();
     } catch (e) { setEmpty("Couldn't load the shelf", "Reload the page to try again."); }
   }
   boot();

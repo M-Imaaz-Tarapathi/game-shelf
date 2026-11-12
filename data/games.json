@@ -615,6 +615,16 @@
    "order": 71,
    "finished": null,
    "steamAppId": 750920
+  },
+  {
+   "id": "gmhvtf2",
+   "title": "Titanfall 2",
+   "hours": null,
+   "rank": null,
+   "order": 72,
+   "finished": null,
+   "steamAppId": 1237970,
+   "playing": true
   }
  ]
 }

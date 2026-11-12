@@ -2,7 +2,7 @@ name: Steam sync
 
 on:
   schedule:
-    - cron: "23 2 * * 1"   # Mondays, 6:23 am Dubai time
+    - cron: "23 2 * * *"   # Every day, 6:23 am Dubai time (keeps Now playing hours fresh)
   workflow_dispatch:
 
 permissions:
