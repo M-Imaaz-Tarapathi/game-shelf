@@ -1,6 +1,6 @@
 {
  "source": "steam",
- "exported": "2026-11-11",
+ "exported": "2026-11-13",
  "games": [
   {
    "name": "DARK SOULS™ III",
@@ -11,8 +11,8 @@
   {
    "name": "Balatro",
    "appid": 2379780,
-   "hours": 272.4,
-   "last_played": "2026-10-17"
+   "hours": 273.9,
+   "last_played": "2026-11-12"
   },
   {
    "name": "ELDEN RING",
@@ -183,6 +183,12 @@
    "last_played": "2024-03-06"
   },
   {
+   "name": "Middle-earth™: Shadow of Mordor™",
+   "appid": 241930,
+   "hours": 13.8,
+   "last_played": "2026-11-12"
+  },
+  {
    "name": "Marvel's Spider-Man: Miles Morales",
    "appid": 1817190,
    "hours": 12.1,
@@ -219,10 +225,10 @@
    "last_played": "2024-02-17"
   },
   {
-   "name": "Middle-earth™: Shadow of Mordor™",
-   "appid": 241930,
-   "hours": 9.2,
-   "last_played": "2026-11-11"
+   "name": "ELDEN RING NIGHTREIGN",
+   "appid": 2622380,
+   "hours": 8.6,
+   "last_played": "2026-09-05"
   },
   {
    "name": "Guacamelee! Super Turbo Championship Edition",
@@ -235,12 +241,6 @@
    "appid": 865360,
    "hours": 8.6,
    "last_played": "2024-09-02"
-  },
-  {
-   "name": "ELDEN RING NIGHTREIGN",
-   "appid": 2622380,
-   "hours": 8.6,
-   "last_played": "2026-09-05"
   },
   {
    "name": "Degrees of Separation",
@@ -285,16 +285,16 @@
    "last_played": "2024-06-23"
   },
   {
-   "name": "The Forest",
-   "appid": 242760,
-   "hours": 5.5,
-   "last_played": "2024-12-26"
-  },
-  {
    "name": "Dispatch",
    "appid": 2592160,
    "hours": 5.5,
    "last_played": "2026-07-08"
+  },
+  {
+   "name": "The Forest",
+   "appid": 242760,
+   "hours": 5.5,
+   "last_played": "2024-12-26"
   },
   {
    "name": "Slay the Spire",
@@ -321,16 +321,16 @@
    "last_played": "2020-07-12"
   },
   {
-   "name": "Salt and Sanctuary",
-   "appid": 283640,
-   "hours": 4.5,
-   "last_played": "2024-06-27"
-  },
-  {
    "name": "Fall Guys",
    "appid": 1097150,
    "hours": 4.5,
    "last_played": "2024-09-07"
+  },
+  {
+   "name": "Salt and Sanctuary",
+   "appid": 283640,
+   "hours": 4.5,
+   "last_played": "2024-06-27"
   },
   {
    "name": "Dead by Daylight",
@@ -405,16 +405,16 @@
    "last_played": "2025-04-17"
   },
   {
-   "name": "Mirror's Edge",
-   "appid": 17410,
-   "hours": 2.1,
-   "last_played": "2025-04-19"
-  },
-  {
    "name": "BlazBlue Entropy Effect",
    "appid": 2273430,
    "hours": 2.1,
    "last_played": "2026-10-17"
+  },
+  {
+   "name": "Mirror's Edge",
+   "appid": 17410,
+   "hours": 2.1,
+   "last_played": "2025-04-19"
   },
   {
    "name": "Resident Evil 7 Biohazard",
@@ -423,16 +423,16 @@
    "last_played": "2025-11-23"
   },
   {
-   "name": "F1 2015",
-   "appid": 286570,
-   "hours": 1.7,
-   "last_played": "2024-07-24"
-  },
-  {
    "name": "Database Detective: Minor Crimes Division",
    "appid": 3950130,
    "hours": 1.7,
    "last_played": "2026-11-11"
+  },
+  {
+   "name": "F1 2015",
+   "appid": 286570,
+   "hours": 1.7,
+   "last_played": "2024-07-24"
   },
   {
    "name": "Battlerite",
@@ -501,6 +501,12 @@
    "last_played": "2025-11-11"
   },
   {
+   "name": "Titanfall® 2",
+   "appid": 1237970,
+   "hours": 0.6,
+   "last_played": "2026-11-12"
+  },
+  {
    "name": "Ori and the Will of the Wisps",
    "appid": 1057090,
    "hours": 0.5,
@@ -531,16 +537,16 @@
    "last_played": "2024-02-24"
   },
   {
-   "name": "PAYDAY 2",
-   "appid": 218620,
-   "hours": 0.1,
-   "last_played": "2020-08-13"
-  },
-  {
    "name": "Enter the Gungeon",
    "appid": 311690,
    "hours": 0.1,
    "last_played": "2024-07-16"
+  },
+  {
+   "name": "PAYDAY 2",
+   "appid": 218620,
+   "hours": 0.1,
+   "last_played": "2020-08-13"
   },
   {
    "name": "SMITE",
@@ -549,8 +555,20 @@
    "last_played": "2018-01-25"
   },
   {
+   "name": "Assassin's Creed Origins",
+   "appid": 582160,
+   "hours": 0.0,
+   "last_played": null
+  },
+  {
    "name": "BioShock 2",
    "appid": 8850,
+   "hours": 0.0,
+   "last_played": null
+  },
+  {
+   "name": "Ghostrunner 2",
+   "appid": 2144740,
    "hours": 0.0,
    "last_played": null
   },
@@ -561,38 +579,14 @@
    "last_played": null
   },
   {
-   "name": "The Witcher 3: Wild Hunt — Remastered",
-   "appid": 292030,
+   "name": "Little Nightmares II",
+   "appid": 860510,
    "hours": 0.0,
-   "last_played": "2022-01-07"
+   "last_played": null
   },
   {
    "name": "Middle-earth™: Shadow of War™",
    "appid": 356190,
-   "hours": 0.0,
-   "last_played": null
-  },
-  {
-   "name": "Warhammer: Vermintide 2",
-   "appid": 552500,
-   "hours": 0.0,
-   "last_played": null
-  },
-  {
-   "name": "Assassin's Creed Origins",
-   "appid": 582160,
-   "hours": 0.0,
-   "last_played": null
-  },
-  {
-   "name": "Tom Clancy's Rainbow Six Siege - Test Server",
-   "appid": 623990,
-   "hours": 0.0,
-   "last_played": null
-  },
-  {
-   "name": "Little Nightmares II",
-   "appid": 860510,
    "hours": 0.0,
    "last_played": null
   },
@@ -603,20 +597,8 @@
    "last_played": null
   },
   {
-   "name": "Titanfall® 2",
-   "appid": 1237970,
-   "hours": 0.0,
-   "last_played": null
-  },
-  {
    "name": "Remnant II",
    "appid": 1282100,
-   "hours": 0.0,
-   "last_played": null
-  },
-  {
-   "name": "Steelrising",
-   "appid": 1283400,
    "hours": 0.0,
    "last_played": null
   },
@@ -627,8 +609,26 @@
    "last_played": null
   },
   {
-   "name": "Ghostrunner 2",
-   "appid": 2144740,
+   "name": "Steelrising",
+   "appid": 1283400,
+   "hours": 0.0,
+   "last_played": null
+  },
+  {
+   "name": "The Witcher 3: Wild Hunt — Remastered",
+   "appid": 292030,
+   "hours": 0.0,
+   "last_played": "2022-01-07"
+  },
+  {
+   "name": "Tom Clancy's Rainbow Six Siege - Test Server",
+   "appid": 623990,
+   "hours": 0.0,
+   "last_played": null
+  },
+  {
+   "name": "Warhammer: Vermintide 2",
+   "appid": 552500,
    "hours": 0.0,
    "last_played": null
   },
