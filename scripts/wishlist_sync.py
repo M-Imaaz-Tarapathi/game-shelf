@@ -35,6 +35,25 @@ def asset_url(assets, name):
     return CDN + fmt.replace("${FILENAME}", file) if fmt and file else None
 
 
+def release_text(rel):
+    """Steam sends coming_soon_display as a format code (date_full, date_quarter, ...), not text."""
+    if rel.get("custom_release_date_message"):
+        return rel["custom_release_date_message"]
+    ts, how = rel.get("steam_release_date"), rel.get("coming_soon_display") or "date_full"
+    if how == "text_tba":
+        return "To be announced"
+    if how == "text_comingsoon" or not ts:
+        return "Coming soon" if rel.get("is_coming_soon") else None
+    t = time.gmtime(ts)
+    if how == "date_year":
+        return time.strftime("%Y", t)
+    if how == "date_quarter":
+        return f"Q{(t.tm_mon - 1) // 3 + 1} {t.tm_year}"
+    if how == "date_month":
+        return time.strftime("%b %Y", t)
+    return time.strftime("%-d %b %Y", t)
+
+
 def store_items(appids):
     """Name, art, release and price for each app, in batches, via IStoreBrowseService."""
     found = {}
@@ -59,9 +78,7 @@ def store_items(appids):
             rel = it.get("release") or {}
             buy = it.get("best_purchase_option") or ((it.get("purchase_options") or [None])[0]) or {}
             coming = bool(rel.get("is_coming_soon"))
-            release = rel.get("coming_soon_display") or rel.get("custom_release_date_message")
-            if not release and rel.get("steam_release_date"):
-                release = time.strftime("%-d %b %Y", time.gmtime(rel["steam_release_date"]))
+            release = release_text(rel)
             found[appid] = {
                 "name": it.get("name"),
                 "cover": asset_url(assets, "library_capsule_2x") or asset_url(assets, "library_capsule"),
