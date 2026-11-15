@@ -1,6 +1,6 @@
 {
  "source": "steam",
- "exported": "2026-11-14",
+ "exported": "2026-11-15",
  "games": [
   {
    "name": "DARK SOULS™ III",
@@ -555,6 +555,12 @@
    "last_played": "2018-01-25"
   },
   {
+   "name": "Steelrising",
+   "appid": 1283400,
+   "hours": 0.1,
+   "last_played": "2026-11-14"
+  },
+  {
    "name": "Assassin's Creed Origins",
    "appid": 582160,
    "hours": 0.0,
@@ -605,12 +611,6 @@
   {
    "name": "Sherlock Holmes The Awakened",
    "appid": 1949030,
-   "hours": 0.0,
-   "last_played": null
-  },
-  {
-   "name": "Steelrising",
-   "appid": 1283400,
    "hours": 0.0,
    "last_played": null
   },
