@@ -310,6 +310,49 @@ img { max-width: 100%; }
 .check { display: flex; gap: 10px; align-items: center; font-size: 13px; font-weight: 600; cursor: pointer; }
 .check input { width: 18px; height: 18px; accent-color: var(--red); margin: 0; }
 @media (prefers-reduced-motion: reduce) { .now-eyebrow i { animation: none; } }
+
+/* view switch: Beaten | Wishlist */
+.views { display: flex; gap: 4px; border-bottom: 1px solid var(--line); }
+.views button {
+  position: relative; display: flex; align-items: baseline; gap: 8px;
+  font-family: var(--display); font-size: clamp(18px, 4.6vw, 22px); text-transform: uppercase; letter-spacing: .02em;
+  background: none; border: 0; color: var(--muted); padding: 8px 14px 12px; cursor: pointer;
+}
+.views button .n { font-family: var(--mono); font-size: 12px; letter-spacing: 0; color: var(--muted); }
+.views button[aria-selected="true"] { color: var(--fg); }
+.views button[aria-selected="true"]::after {
+  content: ""; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 3px;
+  background: linear-gradient(90deg, var(--rose), var(--red)); box-shadow: 0 0 12px rgba(255, 77, 109, .6);
+}
+.views button:hover { color: var(--fg); }
+.views button:focus-visible { outline: 2px solid var(--rose); outline-offset: -2px; }
+.view { display: flex; flex-direction: column; gap: 26px; }
+
+/* wishlist */
+.wish-sum { display: flex; gap: 10px 18px; flex-wrap: wrap; align-items: baseline; font-size: 13px; color: var(--muted); }
+.wish-sum b { font-family: var(--display); font-weight: 400; font-size: 26px; color: var(--fg); margin-right: 4px; }
+.wish-sum .hot b { background: linear-gradient(180deg, #ff6a85, #e01a3c 50%, #8b0a1f); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.wcard { text-decoration: none; color: inherit; }
+.wcard:focus-visible { outline: none; }
+.wcard:focus-visible .cover { outline: 2px solid var(--rose); outline-offset: 2px; }
+.sale-tag {
+  position: absolute; top: 0; left: 0; z-index: 1;
+  font-family: var(--display); font-size: 17px; line-height: 1; padding: 6px 8px 5px;
+  background: linear-gradient(135deg, var(--rose), var(--red)); color: #fff; box-shadow: 0 0 16px rgba(255, 77, 109, .55);
+}
+.soon-tag {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  padding: 6px 8px; background: rgba(10, 2, 5, .85); color: var(--blush); border-top: 1px solid var(--rose);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.card.onsale .cover { outline-color: rgba(255, 77, 109, .5); }
+.cover.plain:has(.soon-tag) .gen { padding-bottom: 44px; }
+.cover.plain:has(.soon-tag)::before { bottom: 34px; }
+.price { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--fg); font-variant-numeric: tabular-nums; }
+.price s { color: var(--muted); }
+.price .sale { color: var(--rose); font-weight: 500; }
+.price .soft { color: var(--muted); }
 </style>
 </head>
 <body>
@@ -326,6 +369,27 @@ img { max-width: 100%; }
     </div>
   </header>
 
+  <nav class="views" role="tablist" aria-label="Shelf view">
+    <button type="button" role="tab" id="tab-beaten" aria-selected="true" aria-controls="beaten-view">Beaten <span class="n" id="n-beaten"></span></button>
+    <button type="button" role="tab" id="tab-wish" aria-selected="false" aria-controls="wish-view">Wishlist <span class="n" id="n-wish"></span></button>
+  </nav>
+
+  <div class="status" id="status" role="status" hidden></div>
+
+  <section class="view" id="wish-view" role="tabpanel" aria-labelledby="tab-wish" hidden>
+    <div class="wish-sum" id="wish-sum"></div>
+    <div class="bar" id="wish-bar">
+      <input class="search" id="wq" type="search" placeholder="Search the wishlist" autocomplete="off" aria-label="Search the wishlist">
+      <div class="seg" role="group" aria-label="Sort wishlist">
+        <button type="button" id="ws-mine" aria-pressed="true">My order</button>
+        <button type="button" id="ws-sale" aria-pressed="false">On sale</button>
+        <button type="button" id="ws-new" aria-pressed="false">Newest</button>
+      </div>
+    </div>
+    <div id="wish-grid"></div>
+  </section>
+
+  <div class="view" id="beaten-view" role="tabpanel" aria-labelledby="tab-beaten">
   <section class="stats" aria-label="Totals">
     <div class="stat"><span class="lbl">Beaten</span><span class="num" id="s-count">0</span><span class="sub">games</span></div>
     <div class="stat hot"><span class="lbl">Total time</span><span class="num" id="s-hours">0<small>h</small></span><span class="sub" id="s-days">0 days of play</span></div>
@@ -343,7 +407,6 @@ img { max-width: 100%; }
     </div>
     <button type="button" class="btn ghost" id="steam-btn" hidden>Steam</button>
   </div>
-  <div class="status" id="status" role="status" hidden></div>
 
   <main id="shelf">
     <div class="empty" id="empty">
@@ -351,9 +414,10 @@ img { max-width: 100%; }
       <p id="empty-p">Every game Imaaz has beaten, with its cover and how long it took.</p>
     </div>
   </main>
+  </div>
 
   <footer class="foot">
-    <span>Covers from <a href="https://www.igdb.com" target="_blank" rel="noopener">IGDB</a> · Playtime from Steam</span>
+    <span>Covers from <a href="https://www.igdb.com" target="_blank" rel="noopener">IGDB</a> · Playtime and wishlist from Steam</span>
     <button type="button" class="linkbtn" id="edit-btn">Edit</button>
   </footer>
 </div>
@@ -835,6 +899,7 @@ img { max-width: 100%; }
   function render() {
     renderStats();
     renderNow();
+    updateCounts();
     const shelf = $("shelf");
     const done = beaten();
     if (!done.length) { shelf.replaceChildren($("empty")); $("bar").hidden = true; return; }
@@ -1094,7 +1159,7 @@ img { max-width: 100%; }
 
   /* ---- edit mode: GitHub key, saved on this device only ---- */
   function setMode() {
-    $("add").hidden = !canWrite;
+    $("add").hidden = !canWrite || view !== "beaten";
     $("steam-btn").hidden = !canWrite;
     $("edit-btn").textContent = canWrite ? "Stop editing on this device" : "Edit";
   }
@@ -1120,7 +1185,7 @@ img { max-width: 100%; }
       if (!repo.permissions || !repo.permissions.push) throw Object.assign(new Error("no push"), { status: 403 });
       try { localStorage.setItem("gs-token", t); } catch (err) {}
       canWrite = true; setMode(); $("key-scrim").hidden = true;
-      const data = await loadGames(); games = data.games || []; render(); loadSteamData();
+      const data = await loadGames(); games = data.games || []; render(); loadSteamData(); loadWishlist();
       showStatus([el("b", null, "You can edit on this device now."), el("span", "miss", "Tap any game to change it, or “+ Add game” for a new one.")]);
     } catch (err) {
       token = prev;
@@ -1135,6 +1200,104 @@ img { max-width: 100%; }
   $("sort-date").addEventListener("click", () => { sortBy = "date"; $("sort-date").setAttribute("aria-pressed", "true"); $("sort-hours").setAttribute("aria-pressed", "false"); render(); });
   $("sort-hours").addEventListener("click", () => { sortBy = "hours"; $("sort-hours").setAttribute("aria-pressed", "true"); $("sort-date").setAttribute("aria-pressed", "false"); render(); });
 
+  /* ---- wishlist (data/wishlist.json, kept fresh by the Steam sync action) ---- */
+  let wish = null, wishLoaded = false, wishSort = "mine", wq = "";
+  const STEAM_CDN = "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/";
+  async function loadWishlist() {
+    try {
+      if (canWrite) { const f = await readFile("data/wishlist.json"); wish = f ? JSON.parse(f.text) : null; }
+      else { const r = await fetch("data/wishlist.json?t=" + Date.now(), { cache: "no-store" }); wish = r.ok ? await r.json() : null; }
+    } catch (e) { wish = null; }
+    wishLoaded = true;
+    updateCounts();
+    if (view === "wishlist") renderWish();
+  }
+  function updateCounts() {
+    $("n-beaten").textContent = games.length ? beaten().length : "";
+    $("n-wish").textContent = wish && wish.items ? wish.items.length : "";
+  }
+  function wishCover(x, box) {
+    const srcs = [x.cover, `${STEAM_CDN}${x.appid}/library_600x900_2x.jpg`, `${STEAM_CDN}${x.appid}/library_600x900.jpg`, x.header, `${STEAM_CDN}${x.appid}/header.jpg`]
+      .filter((s, i, a) => s && a.indexOf(s) === i);
+    const img = new Image(); img.alt = ""; img.loading = "lazy"; img.decoding = "async"; img.referrerPolicy = "no-referrer";
+    let i = 0;
+    img.onerror = () => { i++; if (i < srcs.length) img.src = srcs[i]; else { img.remove(); genCover(box, x.name); } };
+    if (srcs.length) img.src = srcs[0]; else { genCover(box, x.name); return null; }
+    return img;
+  }
+  function wcard(x) {
+    const a = el("a", "card wcard");
+    a.href = `https://store.steampowered.com/app/${x.appid}/`; a.target = "_blank"; a.rel = "noopener";
+    const sale = Number(x.discount) > 0;
+    if (sale) a.classList.add("onsale");
+    a.setAttribute("aria-label", `${x.name}${sale ? `, ${x.discount}% off, ${x.price}` : x.price ? `, ${x.price}` : ""}. Opens on Steam.`);
+    const c = el("div", "cover");
+    const img = wishCover(x, c); if (img) c.append(img);
+    if (sale) c.append(el("span", "sale-tag", `-${x.discount}%`));
+    if (x.coming_soon) c.append(el("span", "soon-tag", x.release && !/^coming soon$/i.test(x.release) ? x.release : "Coming soon"));
+    a.append(c, el("span", "t", x.name));
+    const p = el("span", "price");
+    if (x.free) p.append("Free");
+    else if (sale && x.price) { if (x.original_price) p.append(el("s", null, x.original_price)); p.append(el("span", "sale", x.price)); }
+    else if (x.price) p.append(x.price);
+    else if (!x.coming_soon && x.release) p.append(el("span", "soft", x.release));
+    if (p.childNodes.length) a.append(p);
+    return a;
+  }
+  function renderWish() {
+    const grid = $("wish-grid"), sum = $("wish-sum");
+    const items = (wish && Array.isArray(wish.items)) ? wish.items : [];
+    if (!wishLoaded) { sum.replaceChildren(el("span", null, "Loading the wishlist…")); grid.replaceChildren(); $("wish-bar").hidden = true; return; }
+    if (!items.length) {
+      sum.replaceChildren();
+      $("wish-bar").hidden = true;
+      const box = el("div", "empty");
+      box.append(el("h2", null, wish ? "The wishlist is empty" : "No wishlist yet"),
+        el("p", null, canWrite ? "It syncs from Steam every morning. Tap Steam on the Beaten tab, then “Sync Steam now” to pull it in right away." : "Check back soon."));
+      grid.replaceChildren(box);
+      return;
+    }
+    $("wish-bar").hidden = false;
+    const onSale = items.filter((x) => Number(x.discount) > 0);
+    const soon = items.filter((x) => x.coming_soon);
+    const stat = (n, label, hot) => { const s = el("span", hot ? "hot" : null); s.append(el("b", null, String(n)), label); return s; };
+    const parts = [stat(items.length, items.length === 1 ? "game" : "games")];
+    if (onSale.length) parts.push(stat(onSale.length, "on sale", true));
+    if (soon.length) parts.push(stat(soon.length, "coming soon"));
+    if (wish.exported) parts.push(el("span", null, "Synced from Steam " + fmtDate(wish.exported)));
+    sum.replaceChildren(...parts);
+    const q = wq.trim().toLowerCase();
+    let list = items.map((x, i) => ({ x, i })).filter(({ x }) => !q || (x.name || "").toLowerCase().includes(q));
+    if (wishSort === "sale") list.sort((a, b) => (Number(b.x.discount) || 0) - (Number(a.x.discount) || 0) || a.i - b.i);
+    else if (wishSort === "new") list.sort((a, b) => (b.x.added || "").localeCompare(a.x.added || "") || a.i - b.i);
+    if (!list.length) { grid.replaceChildren(el("p", "note", "No games match that search.")); return; }
+    const g = el("div", "grid"); list.forEach(({ x }) => g.append(wcard(x)));
+    grid.replaceChildren(g);
+  }
+  const wsBtns = { mine: "ws-mine", sale: "ws-sale", new: "ws-new" };
+  Object.entries(wsBtns).forEach(([k, id]) => $(id).addEventListener("click", () => {
+    wishSort = k; Object.entries(wsBtns).forEach(([k2, id2]) => $(id2).setAttribute("aria-pressed", String(k2 === k))); renderWish();
+  }));
+  $("wq").addEventListener("input", (e) => { wq = e.target.value; renderWish(); });
+
+  /* ---- view switch, shareable as #wishlist ---- */
+  let view = "beaten";
+  function setView(v, push) {
+    view = v === "wishlist" ? "wishlist" : "beaten";
+    $("beaten-view").hidden = view !== "beaten";
+    $("wish-view").hidden = view !== "wishlist";
+    $("tab-beaten").setAttribute("aria-selected", String(view === "beaten"));
+    $("tab-wish").setAttribute("aria-selected", String(view === "wishlist"));
+    $("add").hidden = !canWrite || view !== "beaten";
+    if (view === "wishlist") renderWish();
+    if (push) { try { history.replaceState(null, "", view === "wishlist" ? "#wishlist" : location.pathname + location.search); } catch (e) {} }
+  }
+  $("tab-beaten").addEventListener("click", () => setView("beaten", true));
+  $("tab-wish").addEventListener("click", () => setView("wishlist", true));
+  $("tab-beaten").addEventListener("keydown", (e) => { if (e.key === "ArrowRight") { $("tab-wish").focus(); setView("wishlist", true); } });
+  $("tab-wish").addEventListener("keydown", (e) => { if (e.key === "ArrowLeft") { $("tab-beaten").focus(); setView("beaten", true); } });
+  addEventListener("hashchange", () => setView(location.hash === "#wishlist" ? "wishlist" : "beaten"));
+
   function setEmpty(h, p) { $("empty-h").textContent = h; $("empty-p").textContent = p; }
   async function boot() {
     try { drawNebula(); startPetals(); } catch (e) {}
@@ -1144,13 +1307,15 @@ img { max-width: 100%; }
       if (!canWrite) showStatus([el("b", null, "Your GitHub key stopped working on this device."), el("span", "miss", "Tap “Edit” at the bottom to set it up again.")]);
     }
     setMode();
+    setView(location.hash === "#wishlist" ? "wishlist" : "beaten");
     try {
       const data = await loadGames();
       games = data.games || [];
       if (!beaten().length) setEmpty("No games yet", canWrite ? "Tap “+ Add game” to log the first one you've beaten." : "Check back soon.");
       render();
       loadSteamData();
-    } catch (e) { setEmpty("Couldn't load the shelf", "Reload the page to try again."); }
+      loadWishlist();
+    } catch (e) { loadWishlist(); setEmpty("Couldn't load the shelf", "Reload the page to try again."); }
   }
   boot();
 })();
