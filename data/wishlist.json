@@ -1,6 +1,6 @@
 {
  "source": "steam",
- "exported": "2026-11-15",
+ "exported": "2026-11-16",
  "items": [
   {
    "appid": 2376260,
@@ -68,9 +68,9 @@
    "coming_soon": false,
    "release": "27 Mar 2025",
    "free": false,
-   "price": "164.00 AED",
-   "original_price": null,
-   "discount": 0
+   "price": "98.40 AED",
+   "original_price": "164.00 AED",
+   "discount": 40
   },
   {
    "appid": 1274600,
@@ -141,20 +141,6 @@
    "price": "66.00 AED",
    "original_price": null,
    "discount": 0
-  },
-  {
-   "appid": 2313700,
-   "name": "Constance",
-   "priority": 0,
-   "added": "2026-11-07",
-   "cover": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2313700/cca9198fde88ead4e3bb74482e1e3d4c14429721/library_600x900_2x.jpg?t=1788320043",
-   "header": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2313700/header.jpg?t=1788320043",
-   "coming_soon": false,
-   "release": "24 Nov 2025",
-   "free": false,
-   "price": "52.12 AED",
-   "original_price": "77.17 AED",
-   "discount": 32
   },
   {
    "appid": 2751000,
