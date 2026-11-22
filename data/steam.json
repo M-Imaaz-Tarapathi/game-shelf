@@ -1,6 +1,6 @@
 {
  "source": "steam",
- "exported": "2026-11-21",
+ "exported": "2026-11-22",
  "games": [
   {
    "name": "DARK SOULS™ III",
@@ -249,6 +249,12 @@
    "last_played": "2024-11-08"
   },
   {
+   "name": "Constance",
+   "appid": 2313700,
+   "hours": 8.2,
+   "last_played": "2026-11-21"
+  },
+  {
    "name": "Cuphead",
    "appid": 268910,
    "hours": 8.1,
@@ -271,12 +277,6 @@
    "appid": 368370,
    "hours": 7.3,
    "last_played": "2024-08-01"
-  },
-  {
-   "name": "Constance",
-   "appid": 2313700,
-   "hours": 7.1,
-   "last_played": "2026-11-17"
   },
   {
    "name": "A Way Out",
