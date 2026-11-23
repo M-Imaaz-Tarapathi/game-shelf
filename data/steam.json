@@ -1,6 +1,6 @@
 {
  "source": "steam",
- "exported": "2026-11-22",
+ "exported": "2026-11-23",
  "games": [
   {
    "name": "DARK SOULS™ III",
@@ -441,6 +441,12 @@
    "last_played": "2024-07-24"
   },
   {
+   "name": "Voidwrought",
+   "appid": 2014550,
+   "hours": 1.6,
+   "last_played": "2026-11-22"
+  },
+  {
    "name": "Battlerite",
    "appid": 504370,
    "hours": 1.4,
@@ -635,12 +641,6 @@
   {
    "name": "Tom Clancy's Rainbow Six Siege - Test Server",
    "appid": 623990,
-   "hours": 0.0,
-   "last_played": null
-  },
-  {
-   "name": "Voidwrought",
-   "appid": 2014550,
    "hours": 0.0,
    "last_played": null
   },
