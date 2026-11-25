@@ -1,6 +1,6 @@
 {
  "source": "steam",
- "exported": "2026-11-24",
+ "exported": "2026-11-25",
  "items": [
   {
    "appid": 2376260,
@@ -138,9 +138,9 @@
    "coming_soon": false,
    "release": "17 Sep 2020",
    "free": false,
-   "price": "66.00 AED",
-   "original_price": null,
-   "discount": 0
+   "price": "16.50 AED",
+   "original_price": "66.00 AED",
+   "discount": 75
   },
   {
    "appid": 2751000,
